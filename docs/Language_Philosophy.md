@@ -245,3 +245,19 @@ The system should maintain clear architectural boundaries.
 
 Each stage should remain independent, making the system easier to
 understand, extend, test, and maintain.
+
+------------------------------------------------------------------------
+
+# Two-Dimensional Geometry
+
+All spatial concepts in the current language---positions, bounds, layout,
+and rendering---operate in **two dimensions**.
+
+Anchors are `Point2D` values; metrics such as object bounds are
+`Bounds2D` (width and height). The layout engine, expression evaluator,
+and renderers all assume a 2D coordinate system.
+
+This assumption is made explicit so that a future version of the language
+could introduce 3D representations (e.g., isometric or perspective
+views) without ambiguity about which objects and features are
+2D-only versus 3D-capable.
