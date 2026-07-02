@@ -35,15 +35,20 @@ export const antennaElementHandler: ObjectTypeHandler = {
 
     const mastTop = y - GLYPH_HEIGHT / 2;
     const mastBottom = y + GLYPH_HEIGHT / 2;
-    const vSize = 12;
+    const triHeight = 24;
+    const triHalfWidth = triHeight * 10 / 18;
 
     return [{
       kind: 'group',
       id: node.id,
       children: [
-        { kind: 'line', x1: x, y1: mastTop, x2: x, y2: mastBottom, stroke: '#333' },
-        { kind: 'line', x1: x - vSize, y1: mastTop + vSize, x2: x, y2: mastTop, stroke: '#333' },
-        { kind: 'line', x1: x + vSize, y1: mastTop + vSize, x2: x, y2: mastTop, stroke: '#333' },
+        { kind: 'line', x1: x, y1: mastTop + triHeight, x2: x, y2: mastBottom, stroke: '#333' },
+        {
+          kind: 'path',
+          d: `M${x - triHalfWidth} ${mastTop} L${x + triHalfWidth} ${mastTop} L${x} ${mastTop + triHeight} Z`,
+          stroke: '#333',
+          fill: 'none',
+        },
       ],
     }];
   },
