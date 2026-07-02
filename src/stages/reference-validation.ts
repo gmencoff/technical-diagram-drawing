@@ -32,5 +32,11 @@ function collectRefs(expr: Expression): string[] {
   if (expr.kind === 'reference') {
     return [expr.path];
   }
+  if (expr.kind === 'number') {
+    return [];
+  }
+  if (expr.kind === 'binary') {
+    return [...collectRefs(expr.left), ...collectRefs(expr.right)];
+  }
   return expr.args.flatMap(collectRefs);
 }

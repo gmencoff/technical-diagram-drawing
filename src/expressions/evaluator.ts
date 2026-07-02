@@ -2,20 +2,38 @@ import { Expression } from './parser.js';
 import { SceneGraph, Point2D } from '../types/scene-graph.js';
 
 export function evaluateExpression(expr: Expression, sceneGraph: SceneGraph): number | Point2D {
+  if (expr.kind === 'number') {
+    return expr.value;
+  }
+
   if (expr.kind === 'reference') {
     return resolveAnchor(expr.path, sceneGraph);
   }
 
-  if (expr.name === 'distance') {
-    if (expr.args.length !== 2) {
-      throw new Error(`distance() requires exactly 2 arguments`);
+  if (expr.kind === 'binary') {
+    const left = evaluateExpression(expr.left, sceneGraph) as number;
+    const right = evaluateExpression(expr.right, sceneGraph) as number;
+    switch (expr.op) {
+      case '+': return left + right;
+      case '-': return left - right;
+      case '*': return left * right;
+      case '/': return left / right;
     }
-    const a = evaluateExpression(expr.args[0], sceneGraph) as Point2D;
-    const b = evaluateExpression(expr.args[1], sceneGraph) as Point2D;
-    return Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2);
   }
 
-  throw new Error(`Unknown function: "${expr.name}"`);
+  if (expr.kind === 'call') {
+    if (expr.name === 'distance') {
+      if (expr.args.length !== 2) {
+        throw new Error(`distance() requires exactly 2 arguments`);
+      }
+      const a = evaluateExpression(expr.args[0], sceneGraph) as Point2D;
+      const b = evaluateExpression(expr.args[1], sceneGraph) as Point2D;
+      return Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2);
+    }
+    throw new Error(`Unknown function: "${expr.name}"`);
+  }
+
+  throw new Error(`Unknown expression kind`);
 }
 
 function resolveAnchor(path: string, sceneGraph: SceneGraph): Point2D {
