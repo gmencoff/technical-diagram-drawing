@@ -152,7 +152,7 @@ function layoutParallelChain(node: SceneGraphNode, sceneGraph: SceneGraph, offse
     let pathWidth = 0;
     let pathHeight = 0;
     for (let j = 0; j < path.length; j++) {
-      const bounds = getBounds(path[j]);
+      const bounds = getFlowAwareBounds(path[j], 'left-to-right');
       pathWidth += bounds.width + (j < path.length - 1 ? DEFAULT_GAP : 0);
       pathHeight = Math.max(pathHeight, bounds.height);
     }
@@ -169,7 +169,8 @@ function layoutParallelChain(node: SceneGraphNode, sceneGraph: SceneGraph, offse
     let cursorX = offsetX;
 
     for (const elem of path) {
-      const bounds = getBounds(elem);
+      elem.properties.flowDirection = 'left-to-right';
+      const bounds = getFlowAwareBounds(elem, 'left-to-right');
       const cx = cursorX + bounds.width / 2;
       assignAnchorValue(elem, `${elem.id}.center`, { x: cx, y: pathY });
       cursorX += bounds.width + DEFAULT_GAP;
@@ -224,12 +225,28 @@ function assignPortPositions(sceneGraph: SceneGraph): void {
     const centerFeature = node.features.find(f => f.kind === 'anchor' && f.path === `${node.id}.center`);
     if (!centerFeature || centerFeature.kind !== 'anchor' || !centerFeature.value) continue;
     const center = centerFeature.value;
-    const bounds = getBounds(node);
+    const flowDirection = node.properties.flowDirection as string | undefined;
+    const bounds = flowDirection ? getFlowAwareBounds(node, flowDirection) : getBounds(node);
 
-    // Antenna port: bottom of mast
+    // Antenna port: position depends on flow direction and chain position
     const portFeature = node.features.find(f => f.kind === 'anchor' && f.path === `${node.id}.port`);
     if (portFeature && portFeature.kind === 'anchor') {
-      portFeature.value = { x: center.x, y: center.y + bounds.height / 2 };
+      const chainPosition = node.properties.chainPosition as string | undefined;
+      if (flowDirection === 'left-to-right') {
+        if (chainPosition === 'last') {
+          portFeature.value = { x: center.x - bounds.width / 2, y: center.y };
+        } else {
+          portFeature.value = { x: center.x + bounds.width / 2, y: center.y };
+        }
+      } else if (flowDirection === 'right-to-left') {
+        if (chainPosition === 'last') {
+          portFeature.value = { x: center.x + bounds.width / 2, y: center.y };
+        } else {
+          portFeature.value = { x: center.x - bounds.width / 2, y: center.y };
+        }
+      } else {
+        portFeature.value = { x: center.x, y: center.y + bounds.height / 2 };
+      }
     }
 
     // Input port (single): left edge center
@@ -349,6 +366,14 @@ function getBounds(node: SceneGraphNode): Bounds2D {
     return boundsFeature.value;
   }
   return { width: 30, height: 30 };
+}
+
+function getFlowAwareBounds(node: SceneGraphNode, flowDirection: string): Bounds2D {
+  const bounds = getBounds(node);
+  if (node.type === 'antenna.Element' && (flowDirection === 'left-to-right' || flowDirection === 'right-to-left')) {
+    return { width: bounds.height, height: bounds.width };
+  }
+  return bounds;
 }
 
 function assignAnchorValue(node: SceneGraphNode, path: string, value: Point2D): void {

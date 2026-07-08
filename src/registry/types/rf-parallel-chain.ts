@@ -63,6 +63,9 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
 
         const childObj: AuthoringObject = { ...elemSpec, id: elemId };
         const node = handler.expand(childObj);
+        if (j === 0) node.properties.chainPosition = 'first';
+        else if (j === chainSpec.length - 1) node.properties.chainPosition = 'last';
+        else node.properties.chainPosition = 'middle';
         allNodes.push(node);
 
         if (j > 0) {
