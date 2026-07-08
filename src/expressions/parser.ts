@@ -4,7 +4,7 @@ export type Expression =
   | { kind: 'number'; value: number }
   | { kind: 'binary'; op: '+' | '-' | '*' | '/'; left: Expression; right: Expression };
 
-const REFERENCE_PATTERN = /^[a-zA-Z_]\w*\.[a-zA-Z_]\w*$/;
+const REFERENCE_PATTERN = /^[a-zA-Z_]\w*(\[\d+\])?\.[a-zA-Z_]\w*(\[\d+\])?$/;
 const NUMBER_PATTERN = /^-?\d+(\.\d+)?$/;
 
 export function parseExpression(input: string): Expression {

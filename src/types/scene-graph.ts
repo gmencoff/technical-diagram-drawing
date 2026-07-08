@@ -37,6 +37,12 @@ export interface SceneGraphNode {
   properties: Record<string, unknown>;
 }
 
+export interface ResolvedConnection {
+  from: string;
+  to: string;
+}
+
 export interface SceneGraph {
   nodes: SceneGraphNode[];
+  connections: ResolvedConnection[];
 }

@@ -1,0 +1,36 @@
+objects:
+  - type: rf.SeriesChain
+    id: rxSystem
+    objects:
+      - type: rf.ParallelChain
+        id: rxFrontEnd
+        count: 4
+        chain:
+          - type: antenna.Element
+          - type: rf.PhaseShifter
+      - type: rf.Block
+        id: rxDivider
+        label: Power Divider
+        inputPorts: 4
+        outputPorts: 1
+      - type: rf.Block
+        id: rxBlock
+        label: Receiver
+
+  - type: rf.SeriesChain
+    id: txSystem
+    objects:
+      - type: rf.Block
+        id: txBlock
+        label: Transmitter
+      - type: rf.Block
+        id: txDivider
+        label: Power Divider
+        inputPorts: 1
+        outputPorts: 4
+      - type: rf.ParallelChain
+        id: txFrontEnd
+        count: 4
+        chain:
+          - type: rf.PhaseShifter
+          - type: antenna.Element

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 520">
+  <g id="rxFrontEnd[0].element[0]">
+    <line x1="65" y1="74" x2="65" y2="110" stroke="#333" />
+    <path d="M51.666666666666664 50 L78.33333333333333 50 L65 74 Z" stroke="#333" fill="none" />
+  </g>
+  <g id="rxFrontEnd[0].element[1]">
+    <circle cx="195" cy="80" r="15" stroke="#333" fill="none" />
+    <path d="M184.5 90.5 L205.5 69.5 M199.2 69.5 L205.5 69.5 L205.5 75.8" stroke="#333" fill="none" />
+  </g>
+  <g id="rxFrontEnd[1].element[0]">
+    <line x1="65" y1="194" x2="65" y2="230" stroke="#333" />
+    <path d="M51.666666666666664 170 L78.33333333333333 170 L65 194 Z" stroke="#333" fill="none" />
+  </g>
+  <g id="rxFrontEnd[1].element[1]">
+    <circle cx="195" cy="200" r="15" stroke="#333" fill="none" />
+    <path d="M184.5 210.5 L205.5 189.5 M199.2 189.5 L205.5 189.5 L205.5 195.8" stroke="#333" fill="none" />
+  </g>
+  <g id="rxFrontEnd[2].element[0]">
+    <line x1="65" y1="314" x2="65" y2="350" stroke="#333" />
+    <path d="M51.666666666666664 290 L78.33333333333333 290 L65 314 Z" stroke="#333" fill="none" />
+  </g>
+  <g id="rxFrontEnd[2].element[1]">
+    <circle cx="195" cy="320" r="15" stroke="#333" fill="none" />
+    <path d="M184.5 330.5 L205.5 309.5 M199.2 309.5 L205.5 309.5 L205.5 315.8" stroke="#333" fill="none" />
+  </g>
+  <g id="rxFrontEnd[3].element[0]">
+    <line x1="65" y1="434" x2="65" y2="470" stroke="#333" />
+    <path d="M51.666666666666664 410 L78.33333333333333 410 L65 434 Z" stroke="#333" fill="none" />
+  </g>
+  <g id="rxFrontEnd[3].element[1]">
+    <circle cx="195" cy="440" r="15" stroke="#333" fill="none" />
+    <path d="M184.5 450.5 L205.5 429.5 M199.2 429.5 L205.5 429.5 L205.5 435.8" stroke="#333" fill="none" />
+  </g>
+  <g id="rxDivider">
+    <path d="M310 195 h80 v130 h-80 Z" stroke="#333" fill="none" />
+    <text x="350" y="264" font-size="12" text-anchor="middle">Power Divider</text>
+  </g>
+  <g id="rxBlock">
+    <path d="M490 240 h80 v40 h-80 Z" stroke="#333" fill="none" />
+    <text x="530" y="264" font-size="12" text-anchor="middle">Receiver</text>
+  </g>
+  <g id="txBlock">
+    <path d="M670 240 h80 v40 h-80 Z" stroke="#333" fill="none" />
+    <text x="710" y="264" font-size="12" text-anchor="middle">Transmitter</text>
+  </g>
+  <g id="txDivider">
+    <path d="M850 195 h80 v130 h-80 Z" stroke="#333" fill="none" />
+    <text x="890" y="264" font-size="12" text-anchor="middle">Power Divider</text>
+  </g>
+  <g id="txFrontEnd[0].element[0]">
+    <circle cx="1045" cy="80" r="15" stroke="#333" fill="none" />
+    <path d="M1034.5 90.5 L1055.5 69.5 M1049.2 69.5 L1055.5 69.5 L1055.5 75.8" stroke="#333" fill="none" />
+  </g>
+  <g id="txFrontEnd[0].element[1]">
+    <line x1="1175" y1="74" x2="1175" y2="110" stroke="#333" />
+    <path d="M1161.6666666666667 50 L1188.3333333333333 50 L1175 74 Z" stroke="#333" fill="none" />
+  </g>
+  <g id="txFrontEnd[1].element[0]">
+    <circle cx="1045" cy="200" r="15" stroke="#333" fill="none" />
+    <path d="M1034.5 210.5 L1055.5 189.5 M1049.2 189.5 L1055.5 189.5 L1055.5 195.8" stroke="#333" fill="none" />
+  </g>
+  <g id="txFrontEnd[1].element[1]">
+    <line x1="1175" y1="194" x2="1175" y2="230" stroke="#333" />
+    <path d="M1161.6666666666667 170 L1188.3333333333333 170 L1175 194 Z" stroke="#333" fill="none" />
+  </g>
+  <g id="txFrontEnd[2].element[0]">
+    <circle cx="1045" cy="320" r="15" stroke="#333" fill="none" />
+    <path d="M1034.5 330.5 L1055.5 309.5 M1049.2 309.5 L1055.5 309.5 L1055.5 315.8" stroke="#333" fill="none" />
+  </g>
+  <g id="txFrontEnd[2].element[1]">
+    <line x1="1175" y1="314" x2="1175" y2="350" stroke="#333" />
+    <path d="M1161.6666666666667 290 L1188.3333333333333 290 L1175 314 Z" stroke="#333" fill="none" />
+  </g>
+  <g id="txFrontEnd[3].element[0]">
+    <circle cx="1045" cy="440" r="15" stroke="#333" fill="none" />
+    <path d="M1034.5 450.5 L1055.5 429.5 M1049.2 429.5 L1055.5 429.5 L1055.5 435.8" stroke="#333" fill="none" />
+  </g>
+  <g id="txFrontEnd[3].element[1]">
+    <line x1="1175" y1="434" x2="1175" y2="470" stroke="#333" />
+    <path d="M1161.6666666666667 410 L1188.3333333333333 410 L1175 434 Z" stroke="#333" fill="none" />
+  </g>
+  <line x1="65" y1="110" x2="180" y2="80" stroke="#333" />
+  <line x1="65" y1="230" x2="180" y2="200" stroke="#333" />
+  <line x1="65" y1="350" x2="180" y2="320" stroke="#333" />
+  <line x1="65" y1="470" x2="180" y2="440" stroke="#333" />
+  <line x1="210" y1="80" x2="310" y2="221" stroke="#333" />
+  <line x1="210" y1="200" x2="310" y2="247" stroke="#333" />
+  <line x1="210" y1="320" x2="310" y2="273" stroke="#333" />
+  <line x1="210" y1="440" x2="310" y2="299" stroke="#333" />
+  <line x1="390" y1="260" x2="490" y2="260" stroke="#333" />
+  <line x1="1060" y1="80" x2="1175" y2="110" stroke="#333" />
+  <line x1="1060" y1="200" x2="1175" y2="230" stroke="#333" />
+  <line x1="1060" y1="320" x2="1175" y2="350" stroke="#333" />
+  <line x1="1060" y1="440" x2="1175" y2="470" stroke="#333" />
+  <line x1="750" y1="260" x2="850" y2="260" stroke="#333" />
+  <line x1="930" y1="221" x2="1030" y2="80" stroke="#333" />
+  <line x1="930" y1="247" x2="1030" y2="200" stroke="#333" />
+  <line x1="930" y1="273" x2="1030" y2="320" stroke="#333" />
+  <line x1="930" y1="299" x2="1030" y2="440" stroke="#333" />
+</svg>

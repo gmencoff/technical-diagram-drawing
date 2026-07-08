@@ -1,0 +1,16 @@
+objects:
+  - type: antenna.Element
+    id: element1
+
+  - type: antenna.Element
+    id: element2
+
+  - type: annotation.Circle
+    id: freeSpace1
+    center: element1.center
+    radius: distance(element1.center,element2.center)/2
+
+  - type: annotation.Circle
+    id: freeSpace2
+    center: element2.center
+    radius: distance(element1.center,element2.center)/2

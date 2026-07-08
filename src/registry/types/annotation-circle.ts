@@ -9,6 +9,7 @@ export const annotationCircleHandler: ObjectTypeHandler = {
 
   properties: {
     center: {
+      type: 'expression',
       required: true,
       shortDescription: 'Center point of the circle (reference to an anchor)',
       validate(value: unknown, propertyName: string): void {
@@ -18,6 +19,7 @@ export const annotationCircleHandler: ObjectTypeHandler = {
       },
     },
     radius: {
+      type: 'expression',
       required: true,
       shortDescription: 'Radius of the circle (expression or number)',
       validate(value: unknown, propertyName: string): void {

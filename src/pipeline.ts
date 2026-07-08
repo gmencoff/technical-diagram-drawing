@@ -43,16 +43,16 @@ export function renderDiagram(yamlSource: string): PipelineResult {
     return { success: false, errors: validationErrors };
   }
 
-  const sceneGraph = semanticExpansion(doc, handlers);
+  const sceneGraph = semanticExpansion(doc, handlers, registry);
   const symbolTable = buildSymbolTable(sceneGraph);
 
-  const refErrors = referenceValidation(sceneGraph, symbolTable);
+  const refErrors = referenceValidation(sceneGraph, symbolTable, handlers);
   if (refErrors.length > 0) {
     return { success: false, errors: refErrors };
   }
 
   const layoutResult = layout(sceneGraph);
-  const primitives = svgGeneration(layoutResult.sceneGraph, handlers);
+  const primitives = svgGeneration(layoutResult.sceneGraph, handlers, registry);
   const svg = svgSerialization({ viewBox: layoutResult.viewBox, primitives });
 
   return { success: true, svg };

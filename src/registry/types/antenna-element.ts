@@ -20,6 +20,7 @@ export const antennaElementHandler: ObjectTypeHandler = {
       generatedBy: 'antenna.Element',
       features: [
         { kind: 'anchor', path: `${id}.center`, sourceObjectId: id, generatedBy: 'antenna.Element' },
+        { kind: 'anchor', path: `${id}.port`, sourceObjectId: id, generatedBy: 'antenna.Element' },
         { kind: 'metric', path: `${id}.bounds`, sourceObjectId: id, generatedBy: 'antenna.Element', value: { width: GLYPH_WIDTH, height: GLYPH_HEIGHT } },
       ],
       properties: {},
