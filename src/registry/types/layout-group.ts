@@ -1,8 +1,11 @@
-import { ObjectTypeHandler, HandlerLookup, CompositeExpansionResult } from '../object-type-handler.js';
+import { ObjectTypeHandler, HandlerLookup, CompositeExpansionResult, CompositeLayoutResult } from '../object-type-handler.js';
 import { AuthoringObject } from '../../types/authoring.js';
-import { SceneGraphNode } from '../../types/scene-graph.js';
+import { SceneGraphNode, SceneGraph, Bounds2D } from '../../types/scene-graph.js';
 import { SvgPrimitive } from '../../types/svg-primitives.js';
 import { PropertyDefinition } from '../../types/property-definition.js';
+import { getBounds, assignAnchorValue, shiftNodeVertically } from '../../layout-utils.js';
+
+const DEFAULT_GAP = 100;
 
 export const layoutGroupHandler: ObjectTypeHandler = {
   typeName: 'layout.Group',
@@ -93,6 +96,59 @@ export const layoutGroupHandler: ObjectTypeHandler = {
 
     allNodes.push(groupNode);
     return { nodes: allNodes, connections: [] };
+  },
+
+  layoutChildren(node: SceneGraphNode, sceneGraph: SceneGraph, offsetX: number, offsetY: number, registry: HandlerLookup): CompositeLayoutResult {
+    const childIds = (node.properties.childIds as string[]) || [];
+    const gap = (node.properties.gap as number) || DEFAULT_GAP;
+    const children = childIds.map(id => sceneGraph.nodes.find(n => n.id === id)).filter(Boolean) as SceneGraphNode[];
+
+    let cursorX = offsetX;
+    let maxHeight = 0;
+    const childBoundsArr: Bounds2D[] = [];
+
+    for (const child of children) {
+      const childHandler = registry.lookup(child.type);
+      let childBounds: Bounds2D;
+      if (childHandler?.layoutChildren) {
+        childBounds = childHandler.layoutChildren(child, sceneGraph, cursorX, offsetY, registry).bounds;
+      } else {
+        const bounds = childHandler?.getLayoutBounds?.(child, {}) ?? getBounds(child);
+        const cx = cursorX + bounds.width / 2;
+        const cy = offsetY + bounds.height / 2;
+        assignAnchorValue(child, `${child.id}.center`, { x: cx, y: cy });
+        childBounds = bounds;
+      }
+      childBoundsArr.push(childBounds);
+      maxHeight = Math.max(maxHeight, childBounds.height);
+      cursorX += childBounds.width + gap;
+    }
+
+    const compositeCenterY = offsetY + maxHeight / 2;
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      const childBounds = childBoundsArr[i];
+      const childCenterY = offsetY + childBounds.height / 2;
+      const deltaY = compositeCenterY - childCenterY;
+      if (deltaY !== 0) {
+        shiftNodeVertically(child, sceneGraph, deltaY, registry);
+      }
+    }
+
+    const totalWidth = cursorX - gap - offsetX;
+    const totalHeight = maxHeight;
+
+    const boundsFeature = node.features.find(f => f.kind === 'metric' && f.path === `${node.id}.bounds`);
+    if (boundsFeature && boundsFeature.kind === 'metric') {
+      boundsFeature.value = { width: totalWidth, height: totalHeight };
+    }
+    assignAnchorValue(node, `${node.id}.center`, { x: offsetX + totalWidth / 2, y: offsetY + totalHeight / 2 });
+
+    return { bounds: { width: totalWidth, height: totalHeight } };
+  },
+
+  getDescendantIds(node: SceneGraphNode): string[] {
+    return (node.properties.childIds as string[]) || [];
   },
 
   render(_node: SceneGraphNode): SvgPrimitive[] {

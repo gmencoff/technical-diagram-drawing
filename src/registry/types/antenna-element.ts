@@ -1,6 +1,6 @@
-import { ObjectTypeHandler } from '../object-type-handler.js';
+import { ObjectTypeHandler, LayoutContext } from '../object-type-handler.js';
 import { AuthoringObject } from '../../types/authoring.js';
-import { SceneGraphNode, Point2D } from '../../types/scene-graph.js';
+import { SceneGraphNode, Point2D, Bounds2D } from '../../types/scene-graph.js';
 import { SvgPrimitive } from '../../types/svg-primitives.js';
 
 const GLYPH_WIDTH = 30;
@@ -27,21 +27,41 @@ export const antennaElementHandler: ObjectTypeHandler = {
     };
   },
 
+  assignPortPositions(node: SceneGraphNode, center: Point2D, bounds: Bounds2D, _context: LayoutContext): Record<string, Point2D> {
+    const orientation = (node.properties.orientation as string) || 'down';
+    const ports: Record<string, Point2D> = {};
+
+    if (orientation === 'right') {
+      ports[`${node.id}.port`] = { x: center.x + bounds.width / 2, y: center.y };
+    } else if (orientation === 'left') {
+      ports[`${node.id}.port`] = { x: center.x - bounds.width / 2, y: center.y };
+    } else if (orientation === 'up') {
+      ports[`${node.id}.port`] = { x: center.x, y: center.y - bounds.height / 2 };
+    } else {
+      ports[`${node.id}.port`] = { x: center.x, y: center.y + bounds.height / 2 };
+    }
+    return ports;
+  },
+
+  getLayoutBounds(_node: SceneGraphNode, context: LayoutContext): Bounds2D {
+    if (context.flowDirection === 'left-to-right' || context.flowDirection === 'right-to-left') {
+      return { width: GLYPH_HEIGHT, height: GLYPH_WIDTH };
+    }
+    return { width: GLYPH_WIDTH, height: GLYPH_HEIGHT };
+  },
+
   render(node: SceneGraphNode): SvgPrimitive[] {
     const centerFeature = node.features.find(f => f.path === `${node.id}.center`);
     if (!centerFeature || centerFeature.kind !== 'anchor' || !centerFeature.value) {
       return [];
     }
     const { x, y } = centerFeature.value as Point2D;
-    const flowDirection = node.properties.flowDirection as string | undefined;
-    const chainPosition = node.properties.chainPosition as string | undefined;
+    const orientation = (node.properties.orientation as string) || 'down';
 
-    if (flowDirection === 'left-to-right') {
-      const mastDirection = chainPosition === 'last' ? 'left' : 'right';
-      return renderHorizontal(node.id, x, y, mastDirection);
-    } else if (flowDirection === 'right-to-left') {
-      const mastDirection = chainPosition === 'last' ? 'right' : 'left';
-      return renderHorizontal(node.id, x, y, mastDirection);
+    if (orientation === 'right') {
+      return renderHorizontal(node.id, x, y, 'right');
+    } else if (orientation === 'left') {
+      return renderHorizontal(node.id, x, y, 'left');
     }
     return renderVertical(node.id, x, y);
   },

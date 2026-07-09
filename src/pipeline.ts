@@ -51,7 +51,7 @@ export function renderDiagram(yamlSource: string): PipelineResult {
     return { success: false, errors: refErrors };
   }
 
-  const layoutResult = layout(sceneGraph);
+  const layoutResult = layout(sceneGraph, registry);
   const primitives = svgGeneration(layoutResult.sceneGraph, handlers, registry);
   const svg = svgSerialization({ viewBox: layoutResult.viewBox, primitives });
 

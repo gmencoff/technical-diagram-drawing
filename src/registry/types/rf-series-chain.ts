@@ -1,8 +1,11 @@
-import { ObjectTypeHandler, HandlerLookup, CompositeExpansionResult } from '../object-type-handler.js';
+import { ObjectTypeHandler, HandlerLookup, CompositeExpansionResult, CompositeLayoutResult } from '../object-type-handler.js';
 import { AuthoringObject } from '../../types/authoring.js';
-import { SceneGraphNode, ResolvedConnection } from '../../types/scene-graph.js';
+import { SceneGraphNode, SceneGraph, ResolvedConnection, Bounds2D, Point2D } from '../../types/scene-graph.js';
 import { SvgPrimitive } from '../../types/svg-primitives.js';
 import { PropertyDefinition } from '../../types/property-definition.js';
+import { getBounds, assignAnchorValue, shiftNodeVertically } from '../../layout-utils.js';
+
+const DEFAULT_GAP = 100;
 
 export const rfSeriesChainHandler: ObjectTypeHandler = {
   typeName: 'rf.SeriesChain',
@@ -107,6 +110,85 @@ export const rfSeriesChainHandler: ObjectTypeHandler = {
 
     allNodes.push(chainNode);
     return { nodes: allNodes, connections: allConnections };
+  },
+
+  layoutChildren(node: SceneGraphNode, sceneGraph: SceneGraph, offsetX: number, offsetY: number, registry: HandlerLookup): CompositeLayoutResult {
+    const childIds = (node.properties.childIds as string[]) || [];
+    const children = childIds.map(id => sceneGraph.nodes.find(n => n.id === id)).filter(Boolean) as SceneGraphNode[];
+
+    let cursorX = offsetX;
+    let maxHeight = 0;
+    const childBoundsArr: Bounds2D[] = [];
+
+    for (const child of children) {
+      const childHandler = registry.lookup(child.type);
+      let childBounds: Bounds2D;
+      if (childHandler?.layoutChildren) {
+        childBounds = childHandler.layoutChildren(child, sceneGraph, cursorX, offsetY, registry).bounds;
+      } else {
+        const bounds = childHandler?.getLayoutBounds?.(child, {}) ?? getBounds(child);
+        const cx = cursorX + bounds.width / 2;
+        const cy = offsetY + bounds.height / 2;
+        assignAnchorValue(child, `${child.id}.center`, { x: cx, y: cy });
+        childBounds = bounds;
+      }
+      childBoundsArr.push(childBounds);
+      maxHeight = Math.max(maxHeight, childBounds.height);
+      cursorX += childBounds.width + DEFAULT_GAP;
+    }
+
+    const compositeCenterY = offsetY + maxHeight / 2;
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      const childBounds = childBoundsArr[i];
+      const childCenterY = offsetY + childBounds.height / 2;
+      const deltaY = compositeCenterY - childCenterY;
+      if (deltaY !== 0) {
+        shiftNodeVertically(child, sceneGraph, deltaY, registry);
+      }
+    }
+
+    const totalWidth = cursorX - DEFAULT_GAP - offsetX;
+    const totalHeight = maxHeight;
+
+    const boundsFeature = node.features.find(f => f.kind === 'metric' && f.path === `${node.id}.bounds`);
+    if (boundsFeature && boundsFeature.kind === 'metric') {
+      boundsFeature.value = { width: totalWidth, height: totalHeight };
+    }
+    assignAnchorValue(node, `${node.id}.center`, { x: offsetX + totalWidth / 2, y: offsetY + totalHeight / 2 });
+
+    return { bounds: { width: totalWidth, height: totalHeight } };
+  },
+
+  resolveCompositePortAliases(node: SceneGraphNode, sceneGraph: SceneGraph): Record<string, Point2D> {
+    const aliases: Record<string, Point2D> = {};
+    const childIds = (node.properties.childIds as string[]) || [];
+    if (childIds.length === 0) return aliases;
+
+    const firstChildId = childIds[0];
+    const lastChildId = childIds[childIds.length - 1];
+    const firstChild = sceneGraph.nodes.find(n => n.id === firstChildId);
+    const lastChild = sceneGraph.nodes.find(n => n.id === lastChildId);
+
+    if (firstChild) {
+      const port = firstChild.features.find(f => f.kind === 'anchor' && (f.path === `${firstChildId}.input` || f.path === `${firstChildId}.port`));
+      if (port && port.kind === 'anchor' && port.value) {
+        aliases[`${node.id}.input`] = port.value;
+      }
+    }
+
+    if (lastChild) {
+      const port = lastChild.features.find(f => f.kind === 'anchor' && (f.path === `${lastChildId}.output` || f.path === `${lastChildId}.port`));
+      if (port && port.kind === 'anchor' && port.value) {
+        aliases[`${node.id}.output`] = port.value;
+      }
+    }
+
+    return aliases;
+  },
+
+  getDescendantIds(node: SceneGraphNode): string[] {
+    return (node.properties.childIds as string[]) || [];
   },
 
   render(_node: SceneGraphNode): SvgPrimitive[] {
