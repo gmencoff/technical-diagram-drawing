@@ -5,9 +5,11 @@ objects:
       - type: rf.ParallelChain
         id: rxFrontEnd
         count: 4
-        chain:
+        objects:
           - type: antenna.Element
+            id: element
           - type: rf.PhaseShifter
+            id: phaseShifter
       - type: rf.Block
         id: rxDivider
         label: Power Divider
@@ -31,6 +33,8 @@ objects:
       - type: rf.ParallelChain
         id: txFrontEnd
         count: 4
-        chain:
+        objects:
           - type: rf.PhaseShifter
+            id: phaseShifter
           - type: antenna.Element
+            id: element

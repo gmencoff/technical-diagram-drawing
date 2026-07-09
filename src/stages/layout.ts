@@ -13,7 +13,7 @@ export interface LayoutResult {
 }
 
 export function layout(sceneGraph: SceneGraph, registry: HandlerLookup): LayoutResult {
-  const topLevelNodes = getTopLevelNodes(sceneGraph);
+  const topLevelNodes = getTopLevelNodes(sceneGraph, registry);
   const annotations = sceneGraph.nodes.filter(n => isAnnotation(n));
 
   let cursorX = DEFAULT_PADDING;
@@ -54,22 +54,26 @@ export function layout(sceneGraph: SceneGraph, registry: HandlerLookup): LayoutR
   };
 }
 
-function getTopLevelNodes(sceneGraph: SceneGraph): SceneGraphNode[] {
+function getTopLevelNodes(sceneGraph: SceneGraph, registry: HandlerLookup): SceneGraphNode[] {
   const childIds = new Set<string>();
-  for (const node of sceneGraph.nodes) {
-    if (node.properties.childIds) {
-      for (const childId of node.properties.childIds as string[]) {
-        childIds.add(childId);
-      }
+
+  function collectDescendants(node: SceneGraphNode): void {
+    const handler = registry.lookup(node.type);
+    const descendants = handler?.getDescendantIds?.(node) ?? [];
+    for (const id of descendants) {
+      childIds.add(id);
+      const child = sceneGraph.nodes.find(n => n.id === id);
+      if (child) collectDescendants(child);
     }
   }
 
-  const expandedChildPattern = /\[\d+\]\.element\[\d+\]$/;
+  for (const node of sceneGraph.nodes) {
+    collectDescendants(node);
+  }
+
   return sceneGraph.nodes.filter(n => {
     if (isAnnotation(n)) return false;
     if (childIds.has(n.id)) return false;
-    if (expandedChildPattern.test(n.id)) return false;
-    if (n.id !== n.sourceObjectId && n.id !== n.sourceObjectId) return false;
     return true;
   });
 }

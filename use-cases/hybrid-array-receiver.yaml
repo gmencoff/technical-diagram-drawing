@@ -1,0 +1,21 @@
+objects:
+  - type: antenna.Element
+    id: tx
+
+  - type: rf.ParallelChain
+    id: rxSubarrays
+    count: 2
+    objects:
+      - type: rf.ParallelChain
+        id: elements
+        count: 4
+        objects:
+          - type: antenna.Element
+            id: element
+          - type: rf.PhaseShifter
+            id: phaseShifter
+      - type: rf.Block
+        id: combiner
+        label: "2x4 Hybrid"
+        inputPorts: 4
+        outputPorts: 2

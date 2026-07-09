@@ -32,13 +32,5 @@ function lookupRecursive(objects: AuthoringObject[], registry: ObjectRegistry, h
     if (Array.isArray(obj.objects)) {
       lookupRecursive(obj.objects as AuthoringObject[], registry, handlers, errors);
     }
-    if (Array.isArray(obj.chain)) {
-      for (const chainElem of obj.chain as AuthoringObject[]) {
-        const elemHandler = registry.lookup(chainElem.type);
-        if (!elemHandler) {
-          errors.push(new PipelineError('registry-lookup', `Unknown object type "${chainElem.type}" in chain`));
-        }
-      }
-    }
   }
 }

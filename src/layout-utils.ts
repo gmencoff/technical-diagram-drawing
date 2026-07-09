@@ -34,3 +34,14 @@ export function shiftNodeVertically(node: SceneGraphNode, sceneGraph: SceneGraph
     if (child) shiftNodeVertically(child, sceneGraph, deltaY, registry);
   }
 }
+
+export function shiftNodeHorizontally(node: SceneGraphNode, sceneGraph: SceneGraph, deltaX: number, registry: HandlerLookup): void {
+  offsetNodeAnchors(node, deltaX, 0);
+
+  const handler = registry.lookup(node.type);
+  const descendantIds = handler?.getDescendantIds?.(node) ?? [];
+  for (const childId of descendantIds) {
+    const child = sceneGraph.nodes.find(n => n.id === childId);
+    if (child) shiftNodeHorizontally(child, sceneGraph, deltaX, registry);
+  }
+}

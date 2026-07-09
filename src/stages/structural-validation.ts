@@ -10,12 +10,12 @@ export function structuralValidation(doc: AuthoringDocument): PipelineError[] {
   }
 
   const seenIds = new Set<string>();
-  validateObjects(doc.objects, 'objects', seenIds, errors);
+  validateObjects(doc.objects, 'objects', null, seenIds, errors);
 
   return errors;
 }
 
-function validateObjects(objects: unknown[], prefix: string, seenIds: Set<string>, errors: PipelineError[]): void {
+function validateObjects(objects: unknown[], prefix: string, parentId: string | null, seenIds: Set<string>, errors: PipelineError[]): void {
   for (let i = 0; i < objects.length; i++) {
     const obj = objects[i] as AuthoringObject;
     const path = `${prefix}[${i}]`;
@@ -31,34 +31,18 @@ function validateObjects(objects: unknown[], prefix: string, seenIds: Set<string
 
     if (typeof obj.id !== 'string' || obj.id.length === 0) {
       errors.push(new PipelineError('structural-validation', `${path} must have a non-empty "id" string`));
-    } else if (seenIds.has(obj.id)) {
-      errors.push(new PipelineError('structural-validation', `${path} duplicate id "${obj.id}"`));
-    } else {
-      seenIds.add(obj.id);
-    }
-
-    if (Array.isArray(obj.objects)) {
-      validateObjects(obj.objects as unknown[], `${path}.objects`, seenIds, errors);
-    }
-
-    if (Array.isArray(obj.chain)) {
-      validateChain(obj.chain as unknown[], `${path}.chain`, errors);
-    }
-  }
-}
-
-function validateChain(chain: unknown[], prefix: string, errors: PipelineError[]): void {
-  for (let i = 0; i < chain.length; i++) {
-    const elem = chain[i] as AuthoringObject;
-    const path = `${prefix}[${i}]`;
-
-    if (typeof elem !== 'object' || elem === null) {
-      errors.push(new PipelineError('structural-validation', `${path} must be an object`));
       continue;
     }
 
-    if (typeof elem.type !== 'string' || elem.type.length === 0) {
-      errors.push(new PipelineError('structural-validation', `${path} must have a non-empty "type" string`));
+    const fullId = parentId ? `${parentId}.${obj.id}` : obj.id;
+    if (seenIds.has(fullId)) {
+      errors.push(new PipelineError('structural-validation', `${path} duplicate id "${fullId}"`));
+    } else {
+      seenIds.add(fullId);
+    }
+
+    if (Array.isArray(obj.objects)) {
+      validateObjects(obj.objects as unknown[], `${path}.objects`, fullId, seenIds, errors);
     }
   }
 }

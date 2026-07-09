@@ -22,7 +22,7 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
         }
       },
     },
-    chain: {
+    objects: {
       type: 'array',
       required: true,
       shortDescription: 'Array of element types forming one series path',
@@ -52,30 +52,38 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
   expandComposite(obj: AuthoringObject, registry: HandlerLookup): CompositeExpansionResult {
     const id = obj.id;
     const count = obj.count as number;
-    const chainSpec = obj.chain as AuthoringObject[];
+    const objects = obj.objects as AuthoringObject[];
     const allNodes: SceneGraphNode[] = [];
     const allConnections: ResolvedConnection[] = [];
 
-    for (let i = 0; i < count; i++) {
-      const pathId = `${id}[${i}]`;
+    const childIds = objects.map(spec => spec.id);
 
-      for (let j = 0; j < chainSpec.length; j++) {
-        const elemSpec = chainSpec[j];
-        const elemId = `${pathId}.element[${j}]`;
+    for (let i = 0; i < count; i++) {
+      const pathId = `${id}.${i + 1}`;
+
+      for (let j = 0; j < objects.length; j++) {
+        const elemSpec = objects[j];
+        const elemId = `${pathId}.${childIds[j]}`;
         const handler = registry.lookup(elemSpec.type);
         if (!handler) continue;
 
         const childObj: AuthoringObject = { ...elemSpec, id: elemId };
-        const node = handler.expand(childObj);
-        allNodes.push(node);
+        let nodes: SceneGraphNode[];
+        if (handler.expandComposite) {
+          const result = handler.expandComposite(childObj, registry);
+          nodes = result.nodes;
+          allConnections.push(...result.connections);
+        } else {
+          nodes = [handler.expand(childObj)];
+        }
+        allNodes.push(...nodes);
 
         if (j > 0) {
-          const prevId = `${pathId}.element[${j - 1}]`;
-          const prevOutputPort = getOutputPort(prevId, allNodes);
-          const curInputPort = getInputPort(elemId, [node]);
-          if (prevOutputPort && curInputPort) {
-            allConnections.push({ from: prevOutputPort, to: curInputPort });
-          }
+          const prevId = `${pathId}.${childIds[j - 1]}`;
+          const prevOutputPorts = getOutputPorts(prevId, allNodes);
+          const curInputPorts = getInputPorts(elemId, nodes);
+          const connections = inferConnections(prevOutputPorts, curInputPorts);
+          allConnections.push(...connections);
         }
       }
     }
@@ -89,19 +97,20 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
         { kind: 'anchor', path: `${id}.center`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' },
         { kind: 'metric', path: `${id}.bounds`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' },
       ],
-      properties: { count, chainLength: chainSpec.length },
+      properties: { count, childIds },
     };
 
     for (let i = 0; i < count; i++) {
-      const firstElemId = `${id}[${i}].element[0]`;
-      const lastElemId = `${id}[${i}].element[${chainSpec.length - 1}]`;
-      const inputPort = getInputPort(firstElemId, allNodes);
-      const outputPort = getOutputPort(lastElemId, allNodes);
+      const pathId = `${id}.${i + 1}`;
+      const firstElemId = `${pathId}.${childIds[0]}`;
+      const lastElemId = `${pathId}.${childIds[childIds.length - 1]}`;
+      const inputPorts = getInputPorts(firstElemId, allNodes);
+      const outputPorts = getOutputPorts(lastElemId, allNodes);
 
-      if (inputPort) {
+      if (inputPorts.length > 0) {
         chainNode.features.push({ kind: 'anchor', path: `${id}.input[${i}]`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' });
       }
-      if (outputPort) {
+      if (outputPorts.length > 0) {
         chainNode.features.push({ kind: 'anchor', path: `${id}.output[${i}]`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' });
       }
     }
@@ -112,13 +121,14 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
 
   layoutChildren(node: SceneGraphNode, sceneGraph: SceneGraph, offsetX: number, offsetY: number, registry: HandlerLookup): CompositeLayoutResult {
     const count = (node.properties.count as number) || 1;
-    const chainLength = (node.properties.chainLength as number) || 1;
+    const childIds = (node.properties.childIds as string[]) || [];
 
     const pathNodes: SceneGraphNode[][] = [];
     for (let i = 0; i < count; i++) {
+      const pathId = `${node.id}.${i + 1}`;
       const path: SceneGraphNode[] = [];
-      for (let j = 0; j < chainLength; j++) {
-        const elemId = `${node.id}[${i}].element[${j}]`;
+      for (const childId of childIds) {
+        const elemId = `${pathId}.${childId}`;
         const elemNode = sceneGraph.nodes.find(n => n.id === elemId);
         if (elemNode) path.push(elemNode);
       }
@@ -132,7 +142,14 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
       let pathHeight = 0;
       for (let j = 0; j < path.length; j++) {
         const childHandler = registry.lookup(path[j].type);
-        const bounds = childHandler?.getLayoutBounds?.(path[j], { flowDirection: 'left-to-right' }) ?? getBounds(path[j]);
+        let bounds: Bounds2D;
+        if (childHandler?.layoutChildren) {
+          bounds = getBounds(path[j]);
+          const dryResult = childHandler.layoutChildren(path[j], sceneGraph, 0, 0, registry);
+          bounds = dryResult.bounds;
+        } else {
+          bounds = childHandler?.getLayoutBounds?.(path[j], { flowDirection: 'left-to-right' }) ?? getBounds(path[j]);
+        }
         pathWidth += bounds.width + (j < path.length - 1 ? DEFAULT_GAP : 0);
         pathHeight = Math.max(pathHeight, bounds.height);
       }
@@ -145,20 +162,28 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
 
     for (let i = 0; i < pathNodes.length; i++) {
       const path = pathNodes[i];
-      const pathY = offsetY + i * (singlePathHeight + PARALLEL_SPACING) + singlePathHeight / 2;
+      const pathY = offsetY + i * (singlePathHeight + PARALLEL_SPACING);
       let cursorX = offsetX;
 
       for (let j = 0; j < path.length; j++) {
         const elem = path[j];
         const childHandler = registry.lookup(elem.type);
-        const bounds = childHandler?.getLayoutBounds?.(elem, { flowDirection: 'left-to-right' }) ?? getBounds(elem);
-        const cx = cursorX + bounds.width / 2;
-        assignAnchorValue(elem, `${elem.id}.center`, { x: cx, y: pathY });
 
-        elem.properties.orientation = j === path.length - 1 ? 'left' : 'right';
-        elem.properties.flowDirection = 'left-to-right';
+        if (childHandler?.layoutChildren) {
+          childHandler.layoutChildren(elem, sceneGraph, cursorX, pathY, registry);
+          const childBounds = getBounds(elem);
+          cursorX += childBounds.width + DEFAULT_GAP;
+        } else {
+          const bounds = childHandler?.getLayoutBounds?.(elem, { flowDirection: 'left-to-right' }) ?? getBounds(elem);
+          const cx = cursorX + bounds.width / 2;
+          const cy = pathY + singlePathHeight / 2;
+          assignAnchorValue(elem, `${elem.id}.center`, { x: cx, y: cy });
 
-        cursorX += bounds.width + DEFAULT_GAP;
+          elem.properties.orientation = j === path.length - 1 ? 'left' : 'right';
+          elem.properties.flowDirection = 'left-to-right';
+
+          cursorX += bounds.width + DEFAULT_GAP;
+        }
       }
     }
 
@@ -174,11 +199,13 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
   resolveCompositePortAliases(node: SceneGraphNode, sceneGraph: SceneGraph): Record<string, Point2D> {
     const aliases: Record<string, Point2D> = {};
     const count = (node.properties.count as number) || 0;
-    const chainLength = (node.properties.chainLength as number) || 0;
+    const childIds = (node.properties.childIds as string[]) || [];
+    if (childIds.length === 0) return aliases;
 
     for (let i = 0; i < count; i++) {
-      const firstElemId = `${node.id}[${i}].element[0]`;
-      const lastElemId = `${node.id}[${i}].element[${chainLength - 1}]`;
+      const pathId = `${node.id}.${i + 1}`;
+      const firstElemId = `${pathId}.${childIds[0]}`;
+      const lastElemId = `${pathId}.${childIds[childIds.length - 1]}`;
       const firstElem = sceneGraph.nodes.find(n => n.id === firstElemId);
       const lastElem = sceneGraph.nodes.find(n => n.id === lastElemId);
 
@@ -202,10 +229,11 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
   getDescendantIds(node: SceneGraphNode): string[] {
     const ids: string[] = [];
     const count = (node.properties.count as number) || 0;
-    const chainLength = (node.properties.chainLength as number) || 0;
+    const childIds = (node.properties.childIds as string[]) || [];
     for (let i = 0; i < count; i++) {
-      for (let j = 0; j < chainLength; j++) {
-        ids.push(`${node.id}[${i}].element[${j}]`);
+      const pathId = `${node.id}.${i + 1}`;
+      for (const childId of childIds) {
+        ids.push(`${pathId}.${childId}`);
       }
     }
     return ids;
@@ -216,24 +244,59 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
   },
 };
 
-function getInputPort(id: string, nodes: SceneGraphNode[]): string | undefined {
+function getInputPorts(id: string, nodes: SceneGraphNode[]): string[] {
   for (const node of nodes) {
     if (node.id !== id) continue;
     const port = node.features.find(f => f.kind === 'anchor' && f.path === `${id}.port`);
-    if (port) return port.path;
+    if (port) return [port.path];
     const input = node.features.find(f => f.kind === 'anchor' && f.path === `${id}.input`);
-    if (input) return input.path;
+    if (input) return [input.path];
+    const indexed = node.features
+      .filter(f => f.kind === 'anchor' && f.path.match(new RegExp(`^${escapeRegex(id)}\\.input\\[\\d+\\]$`)))
+      .sort((a, b) => extractIndex(a.path) - extractIndex(b.path));
+    if (indexed.length > 0) return indexed.map(f => f.path);
   }
-  return undefined;
+  return [];
 }
 
-function getOutputPort(id: string, nodes: SceneGraphNode[]): string | undefined {
+function getOutputPorts(id: string, nodes: SceneGraphNode[]): string[] {
   for (const node of nodes) {
     if (node.id !== id) continue;
     const port = node.features.find(f => f.kind === 'anchor' && f.path === `${id}.port`);
-    if (port) return port.path;
+    if (port) return [port.path];
     const output = node.features.find(f => f.kind === 'anchor' && f.path === `${id}.output`);
-    if (output) return output.path;
+    if (output) return [output.path];
+    const indexed = node.features
+      .filter(f => f.kind === 'anchor' && f.path.match(new RegExp(`^${escapeRegex(id)}\\.output\\[\\d+\\]$`)))
+      .sort((a, b) => extractIndex(a.path) - extractIndex(b.path));
+    if (indexed.length > 0) return indexed.map(f => f.path);
   }
-  return undefined;
+  return [];
+}
+
+function inferConnections(sourcePorts: string[], targetPorts: string[]): ResolvedConnection[] {
+  const connections: ResolvedConnection[] = [];
+  if (sourcePorts.length === targetPorts.length) {
+    for (let i = 0; i < sourcePorts.length; i++) {
+      connections.push({ from: sourcePorts[i], to: targetPorts[i] });
+    }
+  } else if (sourcePorts.length === 1 && targetPorts.length > 1) {
+    for (const target of targetPorts) {
+      connections.push({ from: sourcePorts[0], to: target });
+    }
+  } else if (sourcePorts.length > 1 && targetPorts.length === 1) {
+    for (const source of sourcePorts) {
+      connections.push({ from: source, to: targetPorts[0] });
+    }
+  }
+  return connections;
+}
+
+function extractIndex(path: string): number {
+  const match = path.match(/\[(\d+)\]$/);
+  return match ? parseInt(match[1], 10) : 0;
+}
+
+function escapeRegex(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
