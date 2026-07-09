@@ -16,9 +16,16 @@ export function assignAnchorValue(node: SceneGraphNode, path: string, value: Poi
   }
 }
 
+export function assignPortValue(node: SceneGraphNode, path: string, value: Point2D): void {
+  const feature = node.features.find(f => f.path === path);
+  if (feature && feature.kind === 'port') {
+    feature.value = value;
+  }
+}
+
 export function offsetNodeAnchors(node: SceneGraphNode, dx: number, dy: number): void {
   for (const feature of node.features) {
-    if (feature.kind === 'anchor' && feature.value) {
+    if ((feature.kind === 'anchor' || feature.kind === 'port') && feature.value) {
       feature.value = { x: feature.value.x + dx, y: feature.value.y + dy };
     }
   }

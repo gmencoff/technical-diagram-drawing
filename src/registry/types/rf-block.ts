@@ -60,18 +60,18 @@ export const rfBlockHandler: ObjectTypeHandler = {
     ];
 
     if (inputPorts === 1) {
-      features.push({ kind: 'anchor', path: `${id}.input`, sourceObjectId: id, generatedBy: 'rf.Block' });
+      features.push({ kind: 'port', path: `${id}.input`, role: 'input', sourceObjectId: id, generatedBy: 'rf.Block' });
     } else {
       for (let i = 0; i < inputPorts; i++) {
-        features.push({ kind: 'anchor', path: `${id}.input[${i}]`, sourceObjectId: id, generatedBy: 'rf.Block' });
+        features.push({ kind: 'port', path: `${id}.input[${i}]`, role: 'input', sourceObjectId: id, generatedBy: 'rf.Block' });
       }
     }
 
     if (outputPorts === 1) {
-      features.push({ kind: 'anchor', path: `${id}.output`, sourceObjectId: id, generatedBy: 'rf.Block' });
+      features.push({ kind: 'port', path: `${id}.output`, role: 'output', sourceObjectId: id, generatedBy: 'rf.Block' });
     } else {
       for (let i = 0; i < outputPorts; i++) {
-        features.push({ kind: 'anchor', path: `${id}.output[${i}]`, sourceObjectId: id, generatedBy: 'rf.Block' });
+        features.push({ kind: 'port', path: `${id}.output[${i}]`, role: 'output', sourceObjectId: id, generatedBy: 'rf.Block' });
       }
     }
 

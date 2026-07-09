@@ -20,8 +20,8 @@ export const rfPhaseShifterHandler: ObjectTypeHandler = {
       generatedBy: 'rf.PhaseShifter',
       features: [
         { kind: 'anchor', path: `${id}.center`, sourceObjectId: id, generatedBy: 'rf.PhaseShifter' },
-        { kind: 'anchor', path: `${id}.input`, sourceObjectId: id, generatedBy: 'rf.PhaseShifter' },
-        { kind: 'anchor', path: `${id}.output`, sourceObjectId: id, generatedBy: 'rf.PhaseShifter' },
+        { kind: 'port', path: `${id}.input`, role: 'input', sourceObjectId: id, generatedBy: 'rf.PhaseShifter' },
+        { kind: 'port', path: `${id}.output`, role: 'output', sourceObjectId: id, generatedBy: 'rf.PhaseShifter' },
         { kind: 'metric', path: `${id}.bounds`, sourceObjectId: id, generatedBy: 'rf.PhaseShifter', value: { width: DIAMETER, height: DIAMETER } },
       ],
       properties: {},

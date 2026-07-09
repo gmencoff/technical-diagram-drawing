@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { renderDiagram } from '../../src/pipeline.js';
 
 const exampleYaml = readFileSync('examples/free-space-propagation.yaml', 'utf-8');
+const hybridArrayYaml = readFileSync('use-cases/hybrid-array-receiver.yaml', 'utf-8');
 
 describe('full pipeline', () => {
   it('renders the free-space-propagation example to SVG', () => {
@@ -42,6 +43,46 @@ describe('full pipeline', () => {
     // rx is placed at x = 50 + 30 + gap(100) + 30/2 = 195
     // distance = 195 - 65 = 130 (both at same y, so pure horizontal)
     expect(svg).toMatch(/r="130"/);
+  });
+});
+
+describe('hybrid array receiver', () => {
+  it('renders successfully', () => {
+    const result = renderDiagram(hybridArrayYaml);
+    expect(result.success).toBe(true);
+    expect(result.svg).toBeDefined();
+  });
+
+  it('generates dot-separated IDs for expanded elements', () => {
+    const { svg } = renderDiagram(hybridArrayYaml);
+    expect(svg).toContain('id="rxSubarrays.1.elements.1.element"');
+    expect(svg).toContain('id="rxSubarrays.1.elements.1.phaseShifter"');
+    expect(svg).toContain('id="rxSubarrays.2.elements.4.element"');
+  });
+
+  it('contains two combiner blocks', () => {
+    const { svg } = renderDiagram(hybridArrayYaml);
+    expect(svg).toContain('id="rxSubarrays.1.combiner"');
+    expect(svg).toContain('id="rxSubarrays.2.combiner"');
+    expect(svg).toContain('2x4 Hybrid');
+  });
+
+  it('has connections from elements to phase shifters and phase shifters to combiners', () => {
+    const { svg } = renderDiagram(hybridArrayYaml);
+    const lines = svg!.match(/<line /g) || [];
+    // 8 element→phaseShifter + 8 phaseShifter→combiner + 8 antenna mast lines = 24
+    // Plus 1 tx antenna mast line = 25
+    expect(lines.length).toBe(25);
+  });
+
+  it('viewBox fits the content', () => {
+    const { svg } = renderDiagram(hybridArrayYaml);
+    const match = svg!.match(/viewBox="0 0 (\d+) (\d+)"/);
+    expect(match).toBeTruthy();
+    const width = parseInt(match![1]);
+    const height = parseInt(match![2]);
+    expect(width).toBeLessThan(700);
+    expect(height).toBeLessThan(900);
   });
 });
 

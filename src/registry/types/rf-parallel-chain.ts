@@ -108,10 +108,10 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
       const outputPorts = getOutputPorts(lastElemId, allNodes);
 
       if (inputPorts.length > 0) {
-        chainNode.features.push({ kind: 'anchor', path: `${id}.input[${i}]`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' });
+        chainNode.features.push({ kind: 'port', path: `${id}.input[${i}]`, role: 'input', sourceObjectId: id, generatedBy: 'rf.ParallelChain' });
       }
       if (outputPorts.length > 0) {
-        chainNode.features.push({ kind: 'anchor', path: `${id}.output[${i}]`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' });
+        chainNode.features.push({ kind: 'port', path: `${id}.output[${i}]`, role: 'output', sourceObjectId: id, generatedBy: 'rf.ParallelChain' });
       }
     }
 
@@ -210,15 +210,15 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
       const lastElem = sceneGraph.nodes.find(n => n.id === lastElemId);
 
       if (firstElem) {
-        const elemPort = firstElem.features.find(f => f.kind === 'anchor' && (f.path === `${firstElemId}.port` || f.path === `${firstElemId}.input`));
-        if (elemPort && elemPort.kind === 'anchor' && elemPort.value) {
+        const elemPort = firstElem.features.find(f => f.kind === 'port' && (f.role === 'bidirectional' || f.role === 'input'));
+        if (elemPort && elemPort.kind === 'port' && elemPort.value) {
           aliases[`${node.id}.input[${i}]`] = elemPort.value;
         }
       }
 
       if (lastElem) {
-        const elemPort = lastElem.features.find(f => f.kind === 'anchor' && (f.path === `${lastElemId}.port` || f.path === `${lastElemId}.output`));
-        if (elemPort && elemPort.kind === 'anchor' && elemPort.value) {
+        const elemPort = lastElem.features.find(f => f.kind === 'port' && (f.role === 'bidirectional' || f.role === 'output'));
+        if (elemPort && elemPort.kind === 'port' && elemPort.value) {
           aliases[`${node.id}.output[${i}]`] = elemPort.value;
         }
       }
@@ -247,12 +247,12 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
 function getInputPorts(id: string, nodes: SceneGraphNode[]): string[] {
   for (const node of nodes) {
     if (node.id !== id) continue;
-    const port = node.features.find(f => f.kind === 'anchor' && f.path === `${id}.port`);
-    if (port) return [port.path];
-    const input = node.features.find(f => f.kind === 'anchor' && f.path === `${id}.input`);
-    if (input) return [input.path];
+    const bidirectional = node.features.find(f => f.kind === 'port' && f.role === 'bidirectional');
+    if (bidirectional) return [bidirectional.path];
+    const singleInput = node.features.find(f => f.kind === 'port' && f.role === 'input' && f.path === `${id}.input`);
+    if (singleInput) return [singleInput.path];
     const indexed = node.features
-      .filter(f => f.kind === 'anchor' && f.path.match(new RegExp(`^${escapeRegex(id)}\\.input\\[\\d+\\]$`)))
+      .filter(f => f.kind === 'port' && f.role === 'input')
       .sort((a, b) => extractIndex(a.path) - extractIndex(b.path));
     if (indexed.length > 0) return indexed.map(f => f.path);
   }
@@ -262,12 +262,12 @@ function getInputPorts(id: string, nodes: SceneGraphNode[]): string[] {
 function getOutputPorts(id: string, nodes: SceneGraphNode[]): string[] {
   for (const node of nodes) {
     if (node.id !== id) continue;
-    const port = node.features.find(f => f.kind === 'anchor' && f.path === `${id}.port`);
-    if (port) return [port.path];
-    const output = node.features.find(f => f.kind === 'anchor' && f.path === `${id}.output`);
-    if (output) return [output.path];
+    const bidirectional = node.features.find(f => f.kind === 'port' && f.role === 'bidirectional');
+    if (bidirectional) return [bidirectional.path];
+    const singleOutput = node.features.find(f => f.kind === 'port' && f.role === 'output' && f.path === `${id}.output`);
+    if (singleOutput) return [singleOutput.path];
     const indexed = node.features
-      .filter(f => f.kind === 'anchor' && f.path.match(new RegExp(`^${escapeRegex(id)}\\.output\\[\\d+\\]$`)))
+      .filter(f => f.kind === 'port' && f.role === 'output')
       .sort((a, b) => extractIndex(a.path) - extractIndex(b.path));
     if (indexed.length > 0) return indexed.map(f => f.path);
   }

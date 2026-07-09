@@ -32,7 +32,7 @@ export interface ObjectTypeHandler {
 
   layoutChildren?(node: SceneGraphNode, sceneGraph: SceneGraph, offsetX: number, offsetY: number, registry: HandlerLookup): CompositeLayoutResult;
   getLayoutBounds?(node: SceneGraphNode, context: LayoutContext): Bounds2D;
-  assignPortPositions?(node: SceneGraphNode, center: Point2D, bounds: Bounds2D, context: LayoutContext): Record<string, Point2D>;
+  assignPortPositions?(node: SceneGraphNode, center: Point2D, bounds: Bounds2D, context: LayoutContext): void;
   resolveCompositePortAliases?(node: SceneGraphNode, sceneGraph: SceneGraph): Record<string, Point2D>;
   getDescendantIds?(node: SceneGraphNode): string[];
 }

@@ -20,27 +20,31 @@ export const antennaElementHandler: ObjectTypeHandler = {
       generatedBy: 'antenna.Element',
       features: [
         { kind: 'anchor', path: `${id}.center`, sourceObjectId: id, generatedBy: 'antenna.Element' },
-        { kind: 'anchor', path: `${id}.port`, sourceObjectId: id, generatedBy: 'antenna.Element' },
+        { kind: 'port', path: `${id}.port`, role: 'bidirectional', sourceObjectId: id, generatedBy: 'antenna.Element' },
         { kind: 'metric', path: `${id}.bounds`, sourceObjectId: id, generatedBy: 'antenna.Element', value: { width: GLYPH_WIDTH, height: GLYPH_HEIGHT } },
       ],
       properties: {},
     };
   },
 
-  assignPortPositions(node: SceneGraphNode, center: Point2D, bounds: Bounds2D, _context: LayoutContext): Record<string, Point2D> {
+  assignPortPositions(node: SceneGraphNode, center: Point2D, bounds: Bounds2D, _context: LayoutContext): void {
     const orientation = (node.properties.orientation as string) || 'down';
-    const ports: Record<string, Point2D> = {};
+    let value: Point2D;
 
     if (orientation === 'right') {
-      ports[`${node.id}.port`] = { x: center.x + bounds.width / 2, y: center.y };
+      value = { x: center.x + bounds.width / 2, y: center.y };
     } else if (orientation === 'left') {
-      ports[`${node.id}.port`] = { x: center.x - bounds.width / 2, y: center.y };
+      value = { x: center.x - bounds.width / 2, y: center.y };
     } else if (orientation === 'up') {
-      ports[`${node.id}.port`] = { x: center.x, y: center.y - bounds.height / 2 };
+      value = { x: center.x, y: center.y - bounds.height / 2 };
     } else {
-      ports[`${node.id}.port`] = { x: center.x, y: center.y + bounds.height / 2 };
+      value = { x: center.x, y: center.y + bounds.height / 2 };
     }
-    return ports;
+
+    const portFeature = node.features.find(f => f.kind === 'port' && f.path === `${node.id}.port`);
+    if (portFeature && portFeature.kind === 'port') {
+      portFeature.value = value;
+    }
   },
 
   getLayoutBounds(_node: SceneGraphNode, context: LayoutContext): Bounds2D {

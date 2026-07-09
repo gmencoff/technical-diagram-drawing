@@ -16,6 +16,17 @@ export interface Anchor {
   value?: Point2D;
 }
 
+export type PortRole = 'input' | 'output' | 'bidirectional';
+
+export interface Port {
+  kind: 'port';
+  path: string;
+  role: PortRole;
+  sourceObjectId: string;
+  generatedBy: string;
+  value?: Point2D;
+}
+
 export interface Metric {
   kind: 'metric';
   path: string;
@@ -24,7 +35,7 @@ export interface Metric {
   value?: Bounds2D;
 }
 
-export type Feature = Anchor | Metric;
+export type Feature = Anchor | Port | Metric;
 
 export interface SceneGraphNode {
   id: string;

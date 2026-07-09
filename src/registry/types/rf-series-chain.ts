@@ -32,8 +32,8 @@ export const rfSeriesChainHandler: ObjectTypeHandler = {
       generatedBy: 'rf.SeriesChain',
       features: [
         { kind: 'anchor', path: `${id}.center`, sourceObjectId: id, generatedBy: 'rf.SeriesChain' },
-        { kind: 'anchor', path: `${id}.input`, sourceObjectId: id, generatedBy: 'rf.SeriesChain' },
-        { kind: 'anchor', path: `${id}.output`, sourceObjectId: id, generatedBy: 'rf.SeriesChain' },
+        { kind: 'port', path: `${id}.input`, role: 'input', sourceObjectId: id, generatedBy: 'rf.SeriesChain' },
+        { kind: 'port', path: `${id}.output`, role: 'output', sourceObjectId: id, generatedBy: 'rf.SeriesChain' },
         { kind: 'metric', path: `${id}.bounds`, sourceObjectId: id, generatedBy: 'rf.SeriesChain' },
       ],
       properties: {},
@@ -92,18 +92,18 @@ export const rfSeriesChainHandler: ObjectTypeHandler = {
       const lastOutput = childResults[childResults.length - 1].outputPorts;
 
       if (firstInput.length === 1) {
-        chainNode.features.push({ kind: 'anchor', path: `${id}.input`, sourceObjectId: id, generatedBy: 'rf.SeriesChain' });
+        chainNode.features.push({ kind: 'port', path: `${id}.input`, role: 'input', sourceObjectId: id, generatedBy: 'rf.SeriesChain' });
       } else {
         for (let i = 0; i < firstInput.length; i++) {
-          chainNode.features.push({ kind: 'anchor', path: `${id}.input[${i}]`, sourceObjectId: id, generatedBy: 'rf.SeriesChain' });
+          chainNode.features.push({ kind: 'port', path: `${id}.input[${i}]`, role: 'input', sourceObjectId: id, generatedBy: 'rf.SeriesChain' });
         }
       }
 
       if (lastOutput.length === 1) {
-        chainNode.features.push({ kind: 'anchor', path: `${id}.output`, sourceObjectId: id, generatedBy: 'rf.SeriesChain' });
+        chainNode.features.push({ kind: 'port', path: `${id}.output`, role: 'output', sourceObjectId: id, generatedBy: 'rf.SeriesChain' });
       } else {
         for (let i = 0; i < lastOutput.length; i++) {
-          chainNode.features.push({ kind: 'anchor', path: `${id}.output[${i}]`, sourceObjectId: id, generatedBy: 'rf.SeriesChain' });
+          chainNode.features.push({ kind: 'port', path: `${id}.output[${i}]`, role: 'output', sourceObjectId: id, generatedBy: 'rf.SeriesChain' });
         }
       }
     }
@@ -171,15 +171,15 @@ export const rfSeriesChainHandler: ObjectTypeHandler = {
     const lastChild = sceneGraph.nodes.find(n => n.id === lastChildId);
 
     if (firstChild) {
-      const port = firstChild.features.find(f => f.kind === 'anchor' && (f.path === `${firstChildId}.input` || f.path === `${firstChildId}.port`));
-      if (port && port.kind === 'anchor' && port.value) {
+      const port = firstChild.features.find(f => f.kind === 'port' && (f.role === 'bidirectional' || f.role === 'input'));
+      if (port && port.kind === 'port' && port.value) {
         aliases[`${node.id}.input`] = port.value;
       }
     }
 
     if (lastChild) {
-      const port = lastChild.features.find(f => f.kind === 'anchor' && (f.path === `${lastChildId}.output` || f.path === `${lastChildId}.port`));
-      if (port && port.kind === 'anchor' && port.value) {
+      const port = lastChild.features.find(f => f.kind === 'port' && (f.role === 'bidirectional' || f.role === 'output'));
+      if (port && port.kind === 'port' && port.value) {
         aliases[`${node.id}.output`] = port.value;
       }
     }
@@ -197,51 +197,33 @@ export const rfSeriesChainHandler: ObjectTypeHandler = {
 };
 
 function getInputPorts(id: string, nodes: SceneGraphNode[]): string[] {
-  const ports: string[] = [];
   for (const node of nodes) {
     if (node.id !== id) continue;
-    const singlePort = node.features.find(f => f.kind === 'anchor' && f.path === `${id}.port`);
-    if (singlePort) {
-      ports.push(singlePort.path);
-      return ports;
-    }
-    const singleInput = node.features.find(f => f.kind === 'anchor' && f.path === `${id}.input`);
-    if (singleInput) {
-      ports.push(singleInput.path);
-      return ports;
-    }
+    const bidirectional = node.features.find(f => f.kind === 'port' && f.role === 'bidirectional');
+    if (bidirectional) return [bidirectional.path];
+    const singleInput = node.features.find(f => f.kind === 'port' && f.role === 'input' && f.path === `${id}.input`);
+    if (singleInput) return [singleInput.path];
     const indexed = node.features
-      .filter(f => f.kind === 'anchor' && f.path.match(new RegExp(`^${escapeRegex(id)}\\.input\\[\\d+\\]$`)))
+      .filter(f => f.kind === 'port' && f.role === 'input')
       .sort((a, b) => extractIndex(a.path) - extractIndex(b.path));
-    if (indexed.length > 0) {
-      return indexed.map(f => f.path);
-    }
+    if (indexed.length > 0) return indexed.map(f => f.path);
   }
-  return ports;
+  return [];
 }
 
 function getOutputPorts(id: string, nodes: SceneGraphNode[]): string[] {
-  const ports: string[] = [];
   for (const node of nodes) {
     if (node.id !== id) continue;
-    const singlePort = node.features.find(f => f.kind === 'anchor' && f.path === `${id}.port`);
-    if (singlePort) {
-      ports.push(singlePort.path);
-      return ports;
-    }
-    const singleOutput = node.features.find(f => f.kind === 'anchor' && f.path === `${id}.output`);
-    if (singleOutput) {
-      ports.push(singleOutput.path);
-      return ports;
-    }
+    const bidirectional = node.features.find(f => f.kind === 'port' && f.role === 'bidirectional');
+    if (bidirectional) return [bidirectional.path];
+    const singleOutput = node.features.find(f => f.kind === 'port' && f.role === 'output' && f.path === `${id}.output`);
+    if (singleOutput) return [singleOutput.path];
     const indexed = node.features
-      .filter(f => f.kind === 'anchor' && f.path.match(new RegExp(`^${escapeRegex(id)}\\.output\\[\\d+\\]$`)))
+      .filter(f => f.kind === 'port' && f.role === 'output')
       .sort((a, b) => extractIndex(a.path) - extractIndex(b.path));
-    if (indexed.length > 0) {
-      return indexed.map(f => f.path);
-    }
+    if (indexed.length > 0) return indexed.map(f => f.path);
   }
-  return ports;
+  return [];
 }
 
 function inferConnections(sourcePorts: string[], targetPorts: string[]): ResolvedConnection[] {

@@ -33,7 +33,7 @@ export function svgGeneration(sceneGraph: SceneGraph, handlers: Map<string, Obje
 function resolveAnchorPoint(path: string, sceneGraph: SceneGraph): Point2D | undefined {
   for (const node of sceneGraph.nodes) {
     const feature = node.features.find(f => f.path === path);
-    if (feature && feature.kind === 'anchor' && feature.value) {
+    if (feature && (feature.kind === 'anchor' || feature.kind === 'port') && feature.value) {
       return feature.value;
     }
   }

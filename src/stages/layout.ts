@@ -1,6 +1,6 @@
 import { SceneGraph, SceneGraphNode, Point2D, Bounds2D } from '../types/scene-graph.js';
 import { HandlerLookup } from '../registry/object-type-handler.js';
-import { getBounds, assignAnchorValue, shiftNodeVertically } from '../layout-utils.js';
+import { getBounds, assignAnchorValue, assignPortValue, shiftNodeVertically } from '../layout-utils.js';
 import { parseExpression } from '../expressions/parser.js';
 import { evaluateExpression } from '../expressions/evaluator.js';
 
@@ -103,49 +103,42 @@ function assignPortPositions(sceneGraph: SceneGraph, registry: HandlerLookup): v
     const handler = registry.lookup(node.type);
     if (handler?.assignPortPositions) {
       const context = { flowDirection: flowDirection as import('../registry/object-type-handler.js').FlowDirection | undefined };
-      const portPositions = handler.assignPortPositions(node, center, bounds, context);
-      for (const [path, value] of Object.entries(portPositions)) {
-        assignAnchorValue(node, path, value);
-      }
+      handler.assignPortPositions(node, center, bounds, context);
     }
 
-    // Input port (single): left edge center
-    const inputFeature = node.features.find(f => f.kind === 'anchor' && f.path === `${node.id}.input`);
-    if (inputFeature && inputFeature.kind === 'anchor') {
+    // Input ports (single): left edge center
+    const inputFeature = node.features.find(f => f.kind === 'port' && f.role === 'input' && f.path === `${node.id}.input`);
+    if (inputFeature && inputFeature.kind === 'port') {
       inputFeature.value = { x: center.x - bounds.width / 2, y: center.y };
     }
 
-    // Output port (single): right edge center
-    const outputFeature = node.features.find(f => f.kind === 'anchor' && f.path === `${node.id}.output`);
-    if (outputFeature && outputFeature.kind === 'anchor') {
+    // Output ports (single): right edge center
+    const outputFeature = node.features.find(f => f.kind === 'port' && f.role === 'output' && f.path === `${node.id}.output`);
+    if (outputFeature && outputFeature.kind === 'port') {
       outputFeature.value = { x: center.x + bounds.width / 2, y: center.y };
     }
 
     // Indexed input ports: distributed vertically along left edge
     const inputPorts = node.features
-      .filter(f => f.kind === 'anchor' && f.path.match(new RegExp(`^${escapeRegex(node.id)}\\.input\\[\\d+\\]$`)))
+      .filter(f => f.kind === 'port' && f.role === 'input')
       .sort((a, b) => extractIndex(a.path) - extractIndex(b.path));
-    if (inputPorts.length > 0) {
+    if (inputPorts.length > 0 && !inputFeature) {
       const spacing = bounds.height / (inputPorts.length + 1);
       for (let i = 0; i < inputPorts.length; i++) {
         const port = inputPorts[i];
-        if (port.kind === 'anchor') {
-          port.value = { x: center.x - bounds.width / 2, y: center.y - bounds.height / 2 + spacing * (i + 1) };
-        }
+        port.value = { x: center.x - bounds.width / 2, y: center.y - bounds.height / 2 + spacing * (i + 1) };
       }
     }
 
     // Indexed output ports: distributed vertically along right edge
     const outputPorts = node.features
-      .filter(f => f.kind === 'anchor' && f.path.match(new RegExp(`^${escapeRegex(node.id)}\\.output\\[\\d+\\]$`)))
+      .filter(f => f.kind === 'port' && f.role === 'output')
       .sort((a, b) => extractIndex(a.path) - extractIndex(b.path));
-    if (outputPorts.length > 0) {
+    if (outputPorts.length > 0 && !outputFeature) {
       const spacing = bounds.height / (outputPorts.length + 1);
       for (let i = 0; i < outputPorts.length; i++) {
         const port = outputPorts[i];
-        if (port.kind === 'anchor') {
-          port.value = { x: center.x + bounds.width / 2, y: center.y - bounds.height / 2 + spacing * (i + 1) };
-        }
+        port.value = { x: center.x + bounds.width / 2, y: center.y - bounds.height / 2 + spacing * (i + 1) };
       }
     }
   }
@@ -155,7 +148,7 @@ function assignPortPositions(sceneGraph: SceneGraph, registry: HandlerLookup): v
     if (!handler?.resolveCompositePortAliases) continue;
     const aliases = handler.resolveCompositePortAliases(node, sceneGraph);
     for (const [path, value] of Object.entries(aliases)) {
-      assignAnchorValue(node, path, value);
+      assignPortValue(node, path, value);
     }
   }
 }
