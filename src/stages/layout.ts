@@ -3,6 +3,7 @@ import { HandlerLookup } from '../registry/object-type-handler.js';
 import { getBounds, assignAnchorValue, assignPortValue, shiftNodeVertically } from '../layout-utils.js';
 import { parseExpression } from '../expressions/parser.js';
 import { evaluateExpression } from '../expressions/evaluator.js';
+import { DEFAULT_STYLE } from '../style-config.js';
 
 const DEFAULT_GAP = 100;
 const DEFAULT_PADDING = 50;
@@ -106,19 +107,21 @@ function assignPortPositions(sceneGraph: SceneGraph, registry: HandlerLookup): v
       handler.assignPortPositions(node, center, bounds, context);
     }
 
-    // Input ports (single): left edge center
+    const stub = DEFAULT_STYLE.portStubLength;
+
+    // Input ports (single): left edge center, offset outward by stub
     const inputFeature = node.features.find(f => f.kind === 'port' && f.role === 'input' && f.path === `${node.id}.input`);
     if (inputFeature && inputFeature.kind === 'port') {
-      inputFeature.value = { x: center.x - bounds.width / 2, y: center.y };
+      inputFeature.value = { x: center.x - bounds.width / 2 - stub, y: center.y };
     }
 
-    // Output ports (single): right edge center
+    // Output ports (single): right edge center, offset outward by stub
     const outputFeature = node.features.find(f => f.kind === 'port' && f.role === 'output' && f.path === `${node.id}.output`);
     if (outputFeature && outputFeature.kind === 'port') {
-      outputFeature.value = { x: center.x + bounds.width / 2, y: center.y };
+      outputFeature.value = { x: center.x + bounds.width / 2 + stub, y: center.y };
     }
 
-    // Indexed input ports: distributed vertically along left edge
+    // Indexed input ports: distributed vertically along left edge, offset outward by stub
     const inputPorts = node.features
       .filter(f => f.kind === 'port' && f.role === 'input')
       .sort((a, b) => extractIndex(a.path) - extractIndex(b.path));
@@ -126,11 +129,11 @@ function assignPortPositions(sceneGraph: SceneGraph, registry: HandlerLookup): v
       const spacing = bounds.height / (inputPorts.length + 1);
       for (let i = 0; i < inputPorts.length; i++) {
         const port = inputPorts[i];
-        port.value = { x: center.x - bounds.width / 2, y: center.y - bounds.height / 2 + spacing * (i + 1) };
+        port.value = { x: center.x - bounds.width / 2 - stub, y: center.y - bounds.height / 2 + spacing * (i + 1) };
       }
     }
 
-    // Indexed output ports: distributed vertically along right edge
+    // Indexed output ports: distributed vertically along right edge, offset outward by stub
     const outputPorts = node.features
       .filter(f => f.kind === 'port' && f.role === 'output')
       .sort((a, b) => extractIndex(a.path) - extractIndex(b.path));
@@ -138,7 +141,7 @@ function assignPortPositions(sceneGraph: SceneGraph, registry: HandlerLookup): v
       const spacing = bounds.height / (outputPorts.length + 1);
       for (let i = 0; i < outputPorts.length; i++) {
         const port = outputPorts[i];
-        port.value = { x: center.x + bounds.width / 2, y: center.y - bounds.height / 2 + spacing * (i + 1) };
+        port.value = { x: center.x + bounds.width / 2 + stub, y: center.y - bounds.height / 2 + spacing * (i + 1) };
       }
     }
   }

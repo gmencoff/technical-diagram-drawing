@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 551 400">
+  <g id="sigGen">
+    <circle cx="65" cy="200" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M56 200 C60.5 192.5 60.5 192.5 65 200 S69.5 207.5 74 200" stroke="#333" stroke-width="1.5" fill="none" />
+    <line x1="45" y1="200" x2="50" y2="200" stroke="#333" stroke-width="1.5" />
+    <line x1="80" y1="200" x2="85" y2="200" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="splitter">
+    <path d="M110 135 h40 v130 h-40 Z" stroke="#333" stroke-width="1.5" fill="none" />
+    <text x="130" y="204" font-size="12" font-family="sans-serif" font-weight="bold" fill="#333" text-anchor="middle" transform="rotate(-90, 130, 200)">Splitter</text>
+    <line x1="105" y1="200" x2="110" y2="200" stroke="#333" stroke-width="1.5" />
+    <line x1="150" y1="161" x2="155" y2="161" stroke="#333" stroke-width="1.5" />
+    <line x1="150" y1="187" x2="155" y2="187" stroke="#333" stroke-width="1.5" />
+    <line x1="150" y1="213" x2="155" y2="213" stroke="#333" stroke-width="1.5" />
+    <line x1="150" y1="239" x2="155" y2="239" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="txFrontEnd.1.phaseShifter">
+    <circle cx="195" cy="65" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M178.02943725152286 81.97056274847714 L211.97056274847714 48.029437251522864" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M211.97056274847714 48.029437251522864 L210.11440744786245 53.59790315336693 L206.40209684663307 49.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
+    <line x1="175" y1="65" x2="180" y2="65" stroke="#333" stroke-width="1.5" />
+    <line x1="210" y1="65" x2="215" y2="65" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="txFrontEnd.1.element">
+    <line x1="225" y1="65" x2="255" y2="65" stroke="#333" stroke-width="1.5" />
+    <path d="M279 51.666666666666664 L279 78.33333333333333 L255 65 Z" stroke="#333" stroke-width="1.5" fill="none" />
+  </g>
+  <g id="txFrontEnd.2.phaseShifter">
+    <circle cx="195" cy="155" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M178.02943725152286 171.97056274847714 L211.97056274847714 138.02943725152286" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M211.97056274847714 138.02943725152286 L210.11440744786245 143.59790315336693 L206.40209684663307 139.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
+    <line x1="175" y1="155" x2="180" y2="155" stroke="#333" stroke-width="1.5" />
+    <line x1="210" y1="155" x2="215" y2="155" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="txFrontEnd.2.element">
+    <line x1="225" y1="155" x2="255" y2="155" stroke="#333" stroke-width="1.5" />
+    <path d="M279 141.66666666666666 L279 168.33333333333334 L255 155 Z" stroke="#333" stroke-width="1.5" fill="none" />
+  </g>
+  <g id="txFrontEnd.3.phaseShifter">
+    <circle cx="195" cy="245" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M178.02943725152286 261.97056274847716 L211.97056274847714 228.02943725152286" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M211.97056274847714 228.02943725152286 L210.11440744786245 233.59790315336693 L206.40209684663307 229.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
+    <line x1="175" y1="245" x2="180" y2="245" stroke="#333" stroke-width="1.5" />
+    <line x1="210" y1="245" x2="215" y2="245" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="txFrontEnd.3.element">
+    <line x1="225" y1="245" x2="255" y2="245" stroke="#333" stroke-width="1.5" />
+    <path d="M279 231.66666666666666 L279 258.3333333333333 L255 245 Z" stroke="#333" stroke-width="1.5" fill="none" />
+  </g>
+  <g id="txFrontEnd.4.phaseShifter">
+    <circle cx="195" cy="335" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M178.02943725152286 351.97056274847716 L211.97056274847714 318.02943725152284" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M211.97056274847714 318.02943725152284 L210.11440744786245 323.5979031533669 L206.40209684663307 319.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
+    <line x1="175" y1="335" x2="180" y2="335" stroke="#333" stroke-width="1.5" />
+    <line x1="210" y1="335" x2="215" y2="335" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="txFrontEnd.4.element">
+    <line x1="225" y1="335" x2="255" y2="335" stroke="#333" stroke-width="1.5" />
+    <path d="M279 321.6666666666667 L279 348.3333333333333 L255 335 Z" stroke="#333" stroke-width="1.5" fill="none" />
+  </g>
+  <g id="probe">
+    <line x1="389.5" y1="200" x2="419.5" y2="200" stroke="#333" stroke-width="1.5" />
+    <path d="M365.5 186.66666666666666 L365.5 213.33333333333334 L389.5 200 Z" stroke="#333" stroke-width="1.5" fill="none" />
+  </g>
+  <g id="receiver">
+    <path d="M421 180 h80 v40 h-80 Z" stroke="#333" stroke-width="1.5" fill="none" />
+    <text x="461" y="204" font-size="12" font-family="sans-serif" font-weight="bold" fill="#333" text-anchor="middle">Receiver</text>
+    <line x1="416" y1="200" x2="421" y2="200" stroke="#333" stroke-width="1.5" />
+  </g>
+  <line x1="215" y1="65" x2="225" y2="65" stroke="#333" stroke-width="1.5" />
+  <line x1="215" y1="155" x2="225" y2="155" stroke="#333" stroke-width="1.5" />
+  <line x1="215" y1="245" x2="225" y2="245" stroke="#333" stroke-width="1.5" />
+  <line x1="215" y1="335" x2="225" y2="335" stroke="#333" stroke-width="1.5" />
+  <line x1="85" y1="200" x2="105" y2="200" stroke="#333" stroke-width="1.5" />
+  <line x1="155" y1="161" x2="175" y2="65" stroke="#333" stroke-width="1.5" />
+  <line x1="155" y1="187" x2="175" y2="155" stroke="#333" stroke-width="1.5" />
+  <line x1="155" y1="213" x2="175" y2="245" stroke="#333" stroke-width="1.5" />
+  <line x1="155" y1="239" x2="175" y2="335" stroke="#333" stroke-width="1.5" />
+  <line x1="406" y1="200" x2="416" y2="200" stroke="#333" stroke-width="1.5" />
+</svg>

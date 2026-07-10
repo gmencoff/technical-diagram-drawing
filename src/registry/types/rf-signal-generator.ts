@@ -7,8 +7,8 @@ import { DEFAULT_STYLE } from '../../style-config.js';
 const RADIUS = 15;
 const DIAMETER = RADIUS * 2;
 
-export const rfPhaseShifterHandler: ObjectTypeHandler = {
-  typeName: 'rf.PhaseShifter',
+export const rfSignalGeneratorHandler: ObjectTypeHandler = {
+  typeName: 'rf.SignalGenerator',
 
   properties: {},
 
@@ -18,12 +18,12 @@ export const rfPhaseShifterHandler: ObjectTypeHandler = {
       id,
       type: obj.type,
       sourceObjectId: id,
-      generatedBy: 'rf.PhaseShifter',
+      generatedBy: 'rf.SignalGenerator',
       features: [
-        { kind: 'anchor', path: `${id}.center`, sourceObjectId: id, generatedBy: 'rf.PhaseShifter' },
-        { kind: 'port', path: `${id}.input`, role: 'input', sourceObjectId: id, generatedBy: 'rf.PhaseShifter' },
-        { kind: 'port', path: `${id}.output`, role: 'output', sourceObjectId: id, generatedBy: 'rf.PhaseShifter' },
-        { kind: 'metric', path: `${id}.bounds`, sourceObjectId: id, generatedBy: 'rf.PhaseShifter', value: { width: DIAMETER, height: DIAMETER } },
+        { kind: 'anchor', path: `${id}.center`, sourceObjectId: id, generatedBy: 'rf.SignalGenerator' },
+        { kind: 'port', path: `${id}.input`, role: 'input', sourceObjectId: id, generatedBy: 'rf.SignalGenerator' },
+        { kind: 'port', path: `${id}.output`, role: 'output', sourceObjectId: id, generatedBy: 'rf.SignalGenerator' },
+        { kind: 'metric', path: `${id}.bounds`, sourceObjectId: id, generatedBy: 'rf.SignalGenerator', value: { width: DIAMETER, height: DIAMETER } },
       ],
       properties: {},
     };
@@ -39,25 +39,12 @@ export const rfPhaseShifterHandler: ObjectTypeHandler = {
       return [];
     }
     const { x, y } = centerFeature.value as Point2D;
-    const arrowExtension = RADIUS * 1.6;
-    const headSize = RADIUS * 0.35;
 
-    // Arrow direction: 45 degrees (upper-right)
-    const dx = 1 / Math.SQRT2;
-    const dy = -1 / Math.SQRT2;
-    // Perpendicular direction
-    const px = -dy;
-    const py = dx;
-
-    const tailX = x - arrowExtension * dx;
-    const tailY = y - arrowExtension * dy;
-    const tipX = x + arrowExtension * dx;
-    const tipY = y + arrowExtension * dy;
-
-    // Arrowhead base center (inset from tip along arrow direction)
-    const baseX = tipX - headSize * dx;
-    const baseY = tipY - headSize * dy;
-    const halfBase = headSize * 0.5;
+    const waveWidth = RADIUS * 1.2;
+    const waveHeight = RADIUS * 0.5;
+    const x0 = x - waveWidth / 2;
+    const x1 = x + waveWidth / 2;
+    const cp = waveWidth / 4;
 
     const stub = DEFAULT_STYLE.portStubLength;
 
@@ -76,17 +63,10 @@ export const rfPhaseShifterHandler: ObjectTypeHandler = {
         },
         {
           kind: 'path',
-          d: `M${tailX} ${tailY} L${tipX} ${tipY}`,
+          d: `M${x0} ${y} C${x0 + cp} ${y - waveHeight} ${x - cp} ${y - waveHeight} ${x} ${y} S${x1 - cp} ${y + waveHeight} ${x1} ${y}`,
           stroke: DEFAULT_STYLE.stroke,
           strokeWidth: DEFAULT_STYLE.strokeWidth,
           fill: 'none',
-        },
-        {
-          kind: 'path',
-          d: `M${tipX} ${tipY} L${baseX + halfBase * px} ${baseY + halfBase * py} L${baseX - halfBase * px} ${baseY - halfBase * py} Z`,
-          stroke: DEFAULT_STYLE.stroke,
-          strokeWidth: DEFAULT_STYLE.strokeWidth,
-          fill: DEFAULT_STYLE.stroke,
         },
         {
           kind: 'line',

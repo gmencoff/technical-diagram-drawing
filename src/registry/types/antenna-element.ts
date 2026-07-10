@@ -49,8 +49,7 @@ export const antennaElementHandler: ObjectTypeHandler = {
   },
 
   getChainGaps(): { inputGap: number; outputGap: number } {
-    const gaps = DEFAULT_STYLE.chainGaps['antenna.Element'];
-    return gaps || { inputGap: 0, outputGap: 0 };
+    return { inputGap: 0, outputGap: 0 };
   },
 
   assignPortPositions(node: SceneGraphNode, center: Point2D, bounds: Bounds2D, _context: LayoutContext): void {

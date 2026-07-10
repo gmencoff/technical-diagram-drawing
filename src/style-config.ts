@@ -1,8 +1,3 @@
-export interface ChainGap {
-  inputGap: number;
-  outputGap: number;
-}
-
 export interface TextStyle {
   fontSize: number;
   fontFamily: string;
@@ -19,7 +14,7 @@ export interface DiagramStyle {
   portIndicatorRadius: number;
   portIndicatorFill: string;
   gapUnit: number;
-  chainGaps: Record<string, ChainGap>;
+  portStubLength: number;
 }
 
 export const DEFAULT_STYLE: DiagramStyle = {
@@ -36,11 +31,7 @@ export const DEFAULT_STYLE: DiagramStyle = {
   portIndicatorRadius: 2.5,
   portIndicatorFill: '#333',
   gapUnit: 15,
-  chainGaps: {
-    'antenna.Element': { inputGap: 0, outputGap: 0 },
-    'rf.PhaseShifter': { inputGap: 15, outputGap: 15 },
-    'rf.Block': { inputGap: 15, outputGap: 15 },
-  },
+  portStubLength: 5,
 };
 
 export function getMastLength(): number {

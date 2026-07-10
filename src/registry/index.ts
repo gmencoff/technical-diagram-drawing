@@ -3,6 +3,7 @@ import { antennaElementHandler } from './types/antenna-element.js';
 import { annotationCircleHandler } from './types/annotation-circle.js';
 import { rfBlockHandler } from './types/rf-block.js';
 import { rfPhaseShifterHandler } from './types/rf-phase-shifter.js';
+import { rfSignalGeneratorHandler } from './types/rf-signal-generator.js';
 import { rfSeriesChainHandler } from './types/rf-series-chain.js';
 import { rfParallelChainHandler } from './types/rf-parallel-chain.js';
 import { layoutGroupHandler } from './types/layout-group.js';
@@ -29,6 +30,7 @@ export function createDefaultRegistry(): ObjectRegistry {
   registry.register(annotationCircleHandler);
   registry.register(rfBlockHandler);
   registry.register(rfPhaseShifterHandler);
+  registry.register(rfSignalGeneratorHandler);
   registry.register(rfSeriesChainHandler);
   registry.register(rfParallelChainHandler);
   registry.register(layoutGroupHandler);

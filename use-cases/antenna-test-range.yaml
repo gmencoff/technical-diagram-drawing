@@ -1,0 +1,31 @@
+objects:
+  - type: rf.SeriesChain
+    id: txSystem
+    objects:
+      - type: rf.SignalGenerator
+        id: sigGen
+      - type: rf.Block
+        id: splitter
+        label: Splitter
+        inputPorts: 1
+        outputPorts: 4
+        textOrientation: vertical
+      - type: rf.ParallelChain
+        id: txFrontEnd
+        count: 4
+        objects:
+          - type: rf.PhaseShifter
+            id: phaseShifter
+          - type: antenna.Element
+            id: element
+
+  - type: rf.SeriesChain
+    id: rxSystem
+    objects:
+      - type: antenna.Element
+        id: probe
+        orientation: left
+      - type: rf.Block
+        id: receiver
+        label: Receiver
+        outputPorts: 0
