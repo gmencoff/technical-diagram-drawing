@@ -1,100 +1,108 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 400">
-  <g id="rxFrontEnd[0].element[0]">
-    <line x1="74" y1="65" x2="110" y2="65" stroke="#333" />
-    <path d="M50 51.666666666666664 L50 78.33333333333333 L74 65 Z" stroke="#333" fill="none" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 838 400">
+  <g id="rxFrontEnd.1.element">
+    <line x1="74" y1="65" x2="104" y2="65" stroke="#333" stroke-width="1.5" />
+    <path d="M50 51.666666666666664 L50 78.33333333333333 L74 65 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
-  <g id="rxFrontEnd[0].element[1]">
-    <circle cx="225" cy="65" r="15" stroke="#333" fill="none" />
-    <path d="M214.5 75.5 L235.5 54.5 M229.2 54.5 L235.5 54.5 L235.5 60.8" stroke="#333" fill="none" />
+  <g id="rxFrontEnd.1.phaseShifter">
+    <circle cx="134" cy="65" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M117.02943725152286 81.97056274847714 L150.97056274847714 48.029437251522864" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M150.97056274847714 48.029437251522864 L149.11440744786245 53.59790315336693 L145.40209684663307 49.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
-  <g id="rxFrontEnd[1].element[0]">
-    <line x1="74" y1="155" x2="110" y2="155" stroke="#333" />
-    <path d="M50 141.66666666666666 L50 168.33333333333334 L74 155 Z" stroke="#333" fill="none" />
+  <g id="rxFrontEnd.2.element">
+    <line x1="74" y1="155" x2="104" y2="155" stroke="#333" stroke-width="1.5" />
+    <path d="M50 141.66666666666666 L50 168.33333333333334 L74 155 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
-  <g id="rxFrontEnd[1].element[1]">
-    <circle cx="225" cy="155" r="15" stroke="#333" fill="none" />
-    <path d="M214.5 165.5 L235.5 144.5 M229.2 144.5 L235.5 144.5 L235.5 150.8" stroke="#333" fill="none" />
+  <g id="rxFrontEnd.2.phaseShifter">
+    <circle cx="134" cy="155" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M117.02943725152286 171.97056274847714 L150.97056274847714 138.02943725152286" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M150.97056274847714 138.02943725152286 L149.11440744786245 143.59790315336693 L145.40209684663307 139.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
-  <g id="rxFrontEnd[2].element[0]">
-    <line x1="74" y1="245" x2="110" y2="245" stroke="#333" />
-    <path d="M50 231.66666666666666 L50 258.3333333333333 L74 245 Z" stroke="#333" fill="none" />
+  <g id="rxFrontEnd.3.element">
+    <line x1="74" y1="245" x2="104" y2="245" stroke="#333" stroke-width="1.5" />
+    <path d="M50 231.66666666666666 L50 258.3333333333333 L74 245 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
-  <g id="rxFrontEnd[2].element[1]">
-    <circle cx="225" cy="245" r="15" stroke="#333" fill="none" />
-    <path d="M214.5 255.5 L235.5 234.5 M229.2 234.5 L235.5 234.5 L235.5 240.8" stroke="#333" fill="none" />
+  <g id="rxFrontEnd.3.phaseShifter">
+    <circle cx="134" cy="245" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M117.02943725152286 261.97056274847716 L150.97056274847714 228.02943725152286" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M150.97056274847714 228.02943725152286 L149.11440744786245 233.59790315336693 L145.40209684663307 229.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
-  <g id="rxFrontEnd[3].element[0]">
-    <line x1="74" y1="335" x2="110" y2="335" stroke="#333" />
-    <path d="M50 321.6666666666667 L50 348.3333333333333 L74 335 Z" stroke="#333" fill="none" />
+  <g id="rxFrontEnd.4.element">
+    <line x1="74" y1="335" x2="104" y2="335" stroke="#333" stroke-width="1.5" />
+    <path d="M50 321.6666666666667 L50 348.3333333333333 L74 335 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
-  <g id="rxFrontEnd[3].element[1]">
-    <circle cx="225" cy="335" r="15" stroke="#333" fill="none" />
-    <path d="M214.5 345.5 L235.5 324.5 M229.2 324.5 L235.5 324.5 L235.5 330.8" stroke="#333" fill="none" />
+  <g id="rxFrontEnd.4.phaseShifter">
+    <circle cx="134" cy="335" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M117.02943725152286 351.97056274847716 L150.97056274847714 318.02943725152284" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M150.97056274847714 318.02943725152284 L149.11440744786245 323.5979031533669 L145.40209684663307 319.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
   <g id="rxDivider">
-    <path d="M340 135 h80 v130 h-80 Z" stroke="#333" fill="none" />
-    <text x="380" y="204" font-size="12" text-anchor="middle">Power Divider</text>
+    <path d="M179 135 h80 v130 h-80 Z" stroke="#333" stroke-width="1.5" fill="none" />
+    <text x="219" y="204" font-size="12" font-family="sans-serif" font-weight="bold" fill="#333" text-anchor="middle">Power Divider</text>
   </g>
   <g id="rxBlock">
-    <path d="M520 180 h80 v40 h-80 Z" stroke="#333" fill="none" />
-    <text x="560" y="204" font-size="12" text-anchor="middle">Receiver</text>
+    <path d="M289 180 h80 v40 h-80 Z" stroke="#333" stroke-width="1.5" fill="none" />
+    <text x="329" y="204" font-size="12" font-family="sans-serif" font-weight="bold" fill="#333" text-anchor="middle">Receiver</text>
   </g>
   <g id="txBlock">
-    <path d="M700 180 h80 v40 h-80 Z" stroke="#333" fill="none" />
-    <text x="740" y="204" font-size="12" text-anchor="middle">Transmitter</text>
+    <path d="M469 180 h80 v40 h-80 Z" stroke="#333" stroke-width="1.5" fill="none" />
+    <text x="509" y="204" font-size="12" font-family="sans-serif" font-weight="bold" fill="#333" text-anchor="middle">Transmitter</text>
   </g>
   <g id="txDivider">
-    <path d="M880 135 h80 v130 h-80 Z" stroke="#333" fill="none" />
-    <text x="920" y="204" font-size="12" text-anchor="middle">Power Divider</text>
+    <path d="M579 135 h80 v130 h-80 Z" stroke="#333" stroke-width="1.5" fill="none" />
+    <text x="619" y="204" font-size="12" font-family="sans-serif" font-weight="bold" fill="#333" text-anchor="middle">Power Divider</text>
   </g>
-  <g id="txFrontEnd[0].element[0]">
-    <circle cx="1075" cy="65" r="15" stroke="#333" fill="none" />
-    <path d="M1064.5 75.5 L1085.5 54.5 M1079.2 54.5 L1085.5 54.5 L1085.5 60.8" stroke="#333" fill="none" />
+  <g id="txFrontEnd.1.phaseShifter">
+    <circle cx="704" cy="65" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M687.0294372515228 81.97056274847714 L720.9705627484772 48.029437251522864" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M720.9705627484772 48.029437251522864 L719.1144074478625 53.59790315336693 L715.4020968466332 49.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
-  <g id="txFrontEnd[0].element[1]">
-    <line x1="1190" y1="65" x2="1226" y2="65" stroke="#333" />
-    <path d="M1250 51.666666666666664 L1250 78.33333333333333 L1226 65 Z" stroke="#333" fill="none" />
+  <g id="txFrontEnd.1.element">
+    <line x1="734" y1="65" x2="764" y2="65" stroke="#333" stroke-width="1.5" />
+    <path d="M788 51.666666666666664 L788 78.33333333333333 L764 65 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
-  <g id="txFrontEnd[1].element[0]">
-    <circle cx="1075" cy="155" r="15" stroke="#333" fill="none" />
-    <path d="M1064.5 165.5 L1085.5 144.5 M1079.2 144.5 L1085.5 144.5 L1085.5 150.8" stroke="#333" fill="none" />
+  <g id="txFrontEnd.2.phaseShifter">
+    <circle cx="704" cy="155" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M687.0294372515228 171.97056274847714 L720.9705627484772 138.02943725152286" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M720.9705627484772 138.02943725152286 L719.1144074478625 143.59790315336693 L715.4020968466332 139.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
-  <g id="txFrontEnd[1].element[1]">
-    <line x1="1190" y1="155" x2="1226" y2="155" stroke="#333" />
-    <path d="M1250 141.66666666666666 L1250 168.33333333333334 L1226 155 Z" stroke="#333" fill="none" />
+  <g id="txFrontEnd.2.element">
+    <line x1="734" y1="155" x2="764" y2="155" stroke="#333" stroke-width="1.5" />
+    <path d="M788 141.66666666666666 L788 168.33333333333334 L764 155 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
-  <g id="txFrontEnd[2].element[0]">
-    <circle cx="1075" cy="245" r="15" stroke="#333" fill="none" />
-    <path d="M1064.5 255.5 L1085.5 234.5 M1079.2 234.5 L1085.5 234.5 L1085.5 240.8" stroke="#333" fill="none" />
+  <g id="txFrontEnd.3.phaseShifter">
+    <circle cx="704" cy="245" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M687.0294372515228 261.97056274847716 L720.9705627484772 228.02943725152286" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M720.9705627484772 228.02943725152286 L719.1144074478625 233.59790315336693 L715.4020968466332 229.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
-  <g id="txFrontEnd[2].element[1]">
-    <line x1="1190" y1="245" x2="1226" y2="245" stroke="#333" />
-    <path d="M1250 231.66666666666666 L1250 258.3333333333333 L1226 245 Z" stroke="#333" fill="none" />
+  <g id="txFrontEnd.3.element">
+    <line x1="734" y1="245" x2="764" y2="245" stroke="#333" stroke-width="1.5" />
+    <path d="M788 231.66666666666666 L788 258.3333333333333 L764 245 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
-  <g id="txFrontEnd[3].element[0]">
-    <circle cx="1075" cy="335" r="15" stroke="#333" fill="none" />
-    <path d="M1064.5 345.5 L1085.5 324.5 M1079.2 324.5 L1085.5 324.5 L1085.5 330.8" stroke="#333" fill="none" />
+  <g id="txFrontEnd.4.phaseShifter">
+    <circle cx="704" cy="335" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M687.0294372515228 351.97056274847716 L720.9705627484772 318.02943725152284" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M720.9705627484772 318.02943725152284 L719.1144074478625 323.5979031533669 L715.4020968466332 319.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
-  <g id="txFrontEnd[3].element[1]">
-    <line x1="1190" y1="335" x2="1226" y2="335" stroke="#333" />
-    <path d="M1250 321.6666666666667 L1250 348.3333333333333 L1226 335 Z" stroke="#333" fill="none" />
+  <g id="txFrontEnd.4.element">
+    <line x1="734" y1="335" x2="764" y2="335" stroke="#333" stroke-width="1.5" />
+    <path d="M788 321.6666666666667 L788 348.3333333333333 L764 335 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
-  <line x1="110" y1="65" x2="210" y2="65" stroke="#333" />
-  <line x1="110" y1="155" x2="210" y2="155" stroke="#333" />
-  <line x1="110" y1="245" x2="210" y2="245" stroke="#333" />
-  <line x1="110" y1="335" x2="210" y2="335" stroke="#333" />
-  <line x1="240" y1="65" x2="340" y2="161" stroke="#333" />
-  <line x1="240" y1="155" x2="340" y2="187" stroke="#333" />
-  <line x1="240" y1="245" x2="340" y2="213" stroke="#333" />
-  <line x1="240" y1="335" x2="340" y2="239" stroke="#333" />
-  <line x1="420" y1="200" x2="520" y2="200" stroke="#333" />
-  <line x1="1090" y1="65" x2="1190" y2="65" stroke="#333" />
-  <line x1="1090" y1="155" x2="1190" y2="155" stroke="#333" />
-  <line x1="1090" y1="245" x2="1190" y2="245" stroke="#333" />
-  <line x1="1090" y1="335" x2="1190" y2="335" stroke="#333" />
-  <line x1="780" y1="200" x2="880" y2="200" stroke="#333" />
-  <line x1="960" y1="161" x2="1060" y2="65" stroke="#333" />
-  <line x1="960" y1="187" x2="1060" y2="155" stroke="#333" />
-  <line x1="960" y1="213" x2="1060" y2="245" stroke="#333" />
-  <line x1="960" y1="239" x2="1060" y2="335" stroke="#333" />
+  <line x1="104" y1="65" x2="119" y2="65" stroke="#333" stroke-width="1.5" />
+  <line x1="104" y1="155" x2="119" y2="155" stroke="#333" stroke-width="1.5" />
+  <line x1="104" y1="245" x2="119" y2="245" stroke="#333" stroke-width="1.5" />
+  <line x1="104" y1="335" x2="119" y2="335" stroke="#333" stroke-width="1.5" />
+  <line x1="149" y1="65" x2="179" y2="161" stroke="#333" stroke-width="1.5" />
+  <line x1="149" y1="155" x2="179" y2="187" stroke="#333" stroke-width="1.5" />
+  <line x1="149" y1="245" x2="179" y2="213" stroke="#333" stroke-width="1.5" />
+  <line x1="149" y1="335" x2="179" y2="239" stroke="#333" stroke-width="1.5" />
+  <line x1="259" y1="200" x2="289" y2="200" stroke="#333" stroke-width="1.5" />
+  <line x1="719" y1="65" x2="734" y2="65" stroke="#333" stroke-width="1.5" />
+  <line x1="719" y1="155" x2="734" y2="155" stroke="#333" stroke-width="1.5" />
+  <line x1="719" y1="245" x2="734" y2="245" stroke="#333" stroke-width="1.5" />
+  <line x1="719" y1="335" x2="734" y2="335" stroke="#333" stroke-width="1.5" />
+  <line x1="549" y1="200" x2="579" y2="200" stroke="#333" stroke-width="1.5" />
+  <line x1="659" y1="161" x2="689" y2="65" stroke="#333" stroke-width="1.5" />
+  <line x1="659" y1="187" x2="689" y2="155" stroke="#333" stroke-width="1.5" />
+  <line x1="659" y1="213" x2="689" y2="245" stroke="#333" stroke-width="1.5" />
+  <line x1="659" y1="239" x2="689" y2="335" stroke="#333" stroke-width="1.5" />
 </svg>

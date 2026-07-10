@@ -1,6 +1,7 @@
 objects:
   - type: antenna.Element
     id: tx
+    orientation: right
 
   - type: rf.ParallelChain
     id: rxSubarrays
@@ -19,3 +20,4 @@ objects:
         label: "2x4 Hybrid"
         inputPorts: 4
         outputPorts: 2
+        textOrientation: vertical

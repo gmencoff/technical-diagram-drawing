@@ -7,6 +7,15 @@ import { getBounds, assignAnchorValue, shiftNodeVertically } from '../../layout-
 
 const DEFAULT_GAP = 100;
 
+function getGapBetween(leftHandler: ObjectTypeHandler | undefined, rightHandler: ObjectTypeHandler | undefined, leftNode: SceneGraphNode, rightNode: SceneGraphNode): number {
+  const leftGaps = leftHandler?.getChainGaps?.(leftNode);
+  const rightGaps = rightHandler?.getChainGaps?.(rightNode);
+  if (leftGaps || rightGaps) {
+    return (leftGaps?.outputGap ?? 15) + (rightGaps?.inputGap ?? 15);
+  }
+  return DEFAULT_GAP;
+}
+
 export const rfSeriesChainHandler: ObjectTypeHandler = {
   typeName: 'rf.SeriesChain',
 
@@ -119,9 +128,12 @@ export const rfSeriesChainHandler: ObjectTypeHandler = {
     let cursorX = offsetX;
     let maxHeight = 0;
     const childBoundsArr: Bounds2D[] = [];
+    const childHandlers: (ObjectTypeHandler | undefined)[] = [];
 
-    for (const child of children) {
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
       const childHandler = registry.lookup(child.type);
+      childHandlers.push(childHandler);
       let childBounds: Bounds2D;
       if (childHandler?.layoutChildren) {
         childBounds = childHandler.layoutChildren(child, sceneGraph, cursorX, offsetY, registry).bounds;
@@ -134,7 +146,12 @@ export const rfSeriesChainHandler: ObjectTypeHandler = {
       }
       childBoundsArr.push(childBounds);
       maxHeight = Math.max(maxHeight, childBounds.height);
-      cursorX += childBounds.width + DEFAULT_GAP;
+      cursorX += childBounds.width;
+      if (i < children.length - 1) {
+        const nextChild = children[i + 1];
+        const nextHandler = registry.lookup(nextChild.type);
+        cursorX += getGapBetween(childHandler, nextHandler, child, nextChild);
+      }
     }
 
     const compositeCenterY = offsetY + maxHeight / 2;
@@ -148,7 +165,7 @@ export const rfSeriesChainHandler: ObjectTypeHandler = {
       }
     }
 
-    const totalWidth = cursorX - DEFAULT_GAP - offsetX;
+    const totalWidth = cursorX - offsetX;
     const totalHeight = maxHeight;
 
     const boundsFeature = node.features.find(f => f.kind === 'metric' && f.path === `${node.id}.bounds`);

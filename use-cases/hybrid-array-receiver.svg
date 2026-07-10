@@ -1,94 +1,102 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 760">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 436 760">
   <g id="tx">
-    <line x1="65" y1="374" x2="65" y2="410" stroke="#333" />
-    <path d="M51.666666666666664 350 L78.33333333333333 350 L65 374 Z" stroke="#333" fill="none" />
+    <line x1="36.5" y1="380" x2="66.5" y2="380" stroke="#333" stroke-width="1.5" />
+    <path d="M90.5 366.6666666666667 L90.5 393.3333333333333 L66.5 380 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
   <g id="rxSubarrays.1.elements.1.element">
-    <line x1="204" y1="65" x2="240" y2="65" stroke="#333" />
-    <path d="M180 51.666666666666664 L180 78.33333333333333 L204 65 Z" stroke="#333" fill="none" />
+    <line x1="201" y1="65" x2="231" y2="65" stroke="#333" stroke-width="1.5" />
+    <path d="M177 51.666666666666664 L177 78.33333333333333 L201 65 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
   <g id="rxSubarrays.1.elements.1.phaseShifter">
-    <circle cx="355" cy="65" r="15" stroke="#333" fill="none" />
-    <path d="M344.5 75.5 L365.5 54.5 M359.2 54.5 L365.5 54.5 L365.5 60.8" stroke="#333" fill="none" />
+    <circle cx="261" cy="65" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M244.02943725152286 81.97056274847714 L277.97056274847716 48.029437251522864" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M277.97056274847716 48.029437251522864 L276.11440744786245 53.59790315336693 L272.4020968466331 49.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
   <g id="rxSubarrays.1.elements.2.element">
-    <line x1="204" y1="155" x2="240" y2="155" stroke="#333" />
-    <path d="M180 141.66666666666666 L180 168.33333333333334 L204 155 Z" stroke="#333" fill="none" />
+    <line x1="201" y1="155" x2="231" y2="155" stroke="#333" stroke-width="1.5" />
+    <path d="M177 141.66666666666666 L177 168.33333333333334 L201 155 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
   <g id="rxSubarrays.1.elements.2.phaseShifter">
-    <circle cx="355" cy="155" r="15" stroke="#333" fill="none" />
-    <path d="M344.5 165.5 L365.5 144.5 M359.2 144.5 L365.5 144.5 L365.5 150.8" stroke="#333" fill="none" />
+    <circle cx="261" cy="155" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M244.02943725152286 171.97056274847714 L277.97056274847716 138.02943725152286" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M277.97056274847716 138.02943725152286 L276.11440744786245 143.59790315336693 L272.4020968466331 139.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
   <g id="rxSubarrays.1.elements.3.element">
-    <line x1="204" y1="245" x2="240" y2="245" stroke="#333" />
-    <path d="M180 231.66666666666666 L180 258.3333333333333 L204 245 Z" stroke="#333" fill="none" />
+    <line x1="201" y1="245" x2="231" y2="245" stroke="#333" stroke-width="1.5" />
+    <path d="M177 231.66666666666666 L177 258.3333333333333 L201 245 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
   <g id="rxSubarrays.1.elements.3.phaseShifter">
-    <circle cx="355" cy="245" r="15" stroke="#333" fill="none" />
-    <path d="M344.5 255.5 L365.5 234.5 M359.2 234.5 L365.5 234.5 L365.5 240.8" stroke="#333" fill="none" />
+    <circle cx="261" cy="245" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M244.02943725152286 261.97056274847716 L277.97056274847716 228.02943725152286" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M277.97056274847716 228.02943725152286 L276.11440744786245 233.59790315336693 L272.4020968466331 229.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
   <g id="rxSubarrays.1.elements.4.element">
-    <line x1="204" y1="335" x2="240" y2="335" stroke="#333" />
-    <path d="M180 321.6666666666667 L180 348.3333333333333 L204 335 Z" stroke="#333" fill="none" />
+    <line x1="201" y1="335" x2="231" y2="335" stroke="#333" stroke-width="1.5" />
+    <path d="M177 321.6666666666667 L177 348.3333333333333 L201 335 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
   <g id="rxSubarrays.1.elements.4.phaseShifter">
-    <circle cx="355" cy="335" r="15" stroke="#333" fill="none" />
-    <path d="M344.5 345.5 L365.5 324.5 M359.2 324.5 L365.5 324.5 L365.5 330.8" stroke="#333" fill="none" />
+    <circle cx="261" cy="335" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M244.02943725152286 351.97056274847716 L277.97056274847716 318.02943725152284" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M277.97056274847716 318.02943725152284 L276.11440744786245 323.5979031533669 L272.4020968466331 319.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
   <g id="rxSubarrays.1.combiner">
-    <path d="M470 135 h80 v130 h-80 Z" stroke="#333" fill="none" />
-    <text x="510" y="204" font-size="12" text-anchor="middle">2x4 Hybrid</text>
+    <path d="M306 135 h80 v130 h-80 Z" stroke="#333" stroke-width="1.5" fill="none" />
+    <text x="346" y="204" font-size="12" font-family="sans-serif" font-weight="bold" fill="#333" text-anchor="middle" transform="rotate(-90, 346, 200)">2x4 Hybrid</text>
   </g>
   <g id="rxSubarrays.2.elements.1.element">
-    <line x1="204" y1="425" x2="240" y2="425" stroke="#333" />
-    <path d="M180 411.6666666666667 L180 438.3333333333333 L204 425 Z" stroke="#333" fill="none" />
+    <line x1="201" y1="425" x2="231" y2="425" stroke="#333" stroke-width="1.5" />
+    <path d="M177 411.6666666666667 L177 438.3333333333333 L201 425 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
   <g id="rxSubarrays.2.elements.1.phaseShifter">
-    <circle cx="355" cy="425" r="15" stroke="#333" fill="none" />
-    <path d="M344.5 435.5 L365.5 414.5 M359.2 414.5 L365.5 414.5 L365.5 420.8" stroke="#333" fill="none" />
+    <circle cx="261" cy="425" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M244.02943725152286 441.97056274847716 L277.97056274847716 408.02943725152284" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M277.97056274847716 408.02943725152284 L276.11440744786245 413.5979031533669 L272.4020968466331 409.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
   <g id="rxSubarrays.2.elements.2.element">
-    <line x1="204" y1="515" x2="240" y2="515" stroke="#333" />
-    <path d="M180 501.6666666666667 L180 528.3333333333334 L204 515 Z" stroke="#333" fill="none" />
+    <line x1="201" y1="515" x2="231" y2="515" stroke="#333" stroke-width="1.5" />
+    <path d="M177 501.6666666666667 L177 528.3333333333334 L201 515 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
   <g id="rxSubarrays.2.elements.2.phaseShifter">
-    <circle cx="355" cy="515" r="15" stroke="#333" fill="none" />
-    <path d="M344.5 525.5 L365.5 504.5 M359.2 504.5 L365.5 504.5 L365.5 510.8" stroke="#333" fill="none" />
+    <circle cx="261" cy="515" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M244.02943725152286 531.9705627484772 L277.97056274847716 498.02943725152284" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M277.97056274847716 498.02943725152284 L276.11440744786245 503.5979031533669 L272.4020968466331 499.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
   <g id="rxSubarrays.2.elements.3.element">
-    <line x1="204" y1="605" x2="240" y2="605" stroke="#333" />
-    <path d="M180 591.6666666666666 L180 618.3333333333334 L204 605 Z" stroke="#333" fill="none" />
+    <line x1="201" y1="605" x2="231" y2="605" stroke="#333" stroke-width="1.5" />
+    <path d="M177 591.6666666666666 L177 618.3333333333334 L201 605 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
   <g id="rxSubarrays.2.elements.3.phaseShifter">
-    <circle cx="355" cy="605" r="15" stroke="#333" fill="none" />
-    <path d="M344.5 615.5 L365.5 594.5 M359.2 594.5 L365.5 594.5 L365.5 600.8" stroke="#333" fill="none" />
+    <circle cx="261" cy="605" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M244.02943725152286 621.9705627484772 L277.97056274847716 588.0294372515228" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M277.97056274847716 588.0294372515228 L276.11440744786245 593.5979031533668 L272.4020968466331 589.8855925521375 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
   <g id="rxSubarrays.2.elements.4.element">
-    <line x1="204" y1="695" x2="240" y2="695" stroke="#333" />
-    <path d="M180 681.6666666666666 L180 708.3333333333334 L204 695 Z" stroke="#333" fill="none" />
+    <line x1="201" y1="695" x2="231" y2="695" stroke="#333" stroke-width="1.5" />
+    <path d="M177 681.6666666666666 L177 708.3333333333334 L201 695 Z" stroke="#333" stroke-width="1.5" fill="none" />
   </g>
   <g id="rxSubarrays.2.elements.4.phaseShifter">
-    <circle cx="355" cy="695" r="15" stroke="#333" fill="none" />
-    <path d="M344.5 705.5 L365.5 684.5 M359.2 684.5 L365.5 684.5 L365.5 690.8" stroke="#333" fill="none" />
+    <circle cx="261" cy="695" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M244.02943725152286 711.9705627484772 L277.97056274847716 678.0294372515228" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M277.97056274847716 678.0294372515228 L276.11440744786245 683.5979031533668 L272.4020968466331 679.8855925521375 Z" stroke="#333" stroke-width="1.5" fill="#333" />
   </g>
   <g id="rxSubarrays.2.combiner">
-    <path d="M470 495 h80 v130 h-80 Z" stroke="#333" fill="none" />
-    <text x="510" y="564" font-size="12" text-anchor="middle">2x4 Hybrid</text>
+    <path d="M306 495 h80 v130 h-80 Z" stroke="#333" stroke-width="1.5" fill="none" />
+    <text x="346" y="564" font-size="12" font-family="sans-serif" font-weight="bold" fill="#333" text-anchor="middle" transform="rotate(-90, 346, 560)">2x4 Hybrid</text>
   </g>
-  <line x1="240" y1="65" x2="340" y2="65" stroke="#333" />
-  <line x1="240" y1="155" x2="340" y2="155" stroke="#333" />
-  <line x1="240" y1="245" x2="340" y2="245" stroke="#333" />
-  <line x1="240" y1="335" x2="340" y2="335" stroke="#333" />
-  <line x1="370" y1="65" x2="470" y2="161" stroke="#333" />
-  <line x1="370" y1="155" x2="470" y2="187" stroke="#333" />
-  <line x1="370" y1="245" x2="470" y2="213" stroke="#333" />
-  <line x1="370" y1="335" x2="470" y2="239" stroke="#333" />
-  <line x1="240" y1="425" x2="340" y2="425" stroke="#333" />
-  <line x1="240" y1="515" x2="340" y2="515" stroke="#333" />
-  <line x1="240" y1="605" x2="340" y2="605" stroke="#333" />
-  <line x1="240" y1="695" x2="340" y2="695" stroke="#333" />
-  <line x1="370" y1="425" x2="470" y2="521" stroke="#333" />
-  <line x1="370" y1="515" x2="470" y2="547" stroke="#333" />
-  <line x1="370" y1="605" x2="470" y2="573" stroke="#333" />
-  <line x1="370" y1="695" x2="470" y2="599" stroke="#333" />
+  <line x1="231" y1="65" x2="246" y2="65" stroke="#333" stroke-width="1.5" />
+  <line x1="231" y1="155" x2="246" y2="155" stroke="#333" stroke-width="1.5" />
+  <line x1="231" y1="245" x2="246" y2="245" stroke="#333" stroke-width="1.5" />
+  <line x1="231" y1="335" x2="246" y2="335" stroke="#333" stroke-width="1.5" />
+  <line x1="276" y1="65" x2="306" y2="161" stroke="#333" stroke-width="1.5" />
+  <line x1="276" y1="155" x2="306" y2="187" stroke="#333" stroke-width="1.5" />
+  <line x1="276" y1="245" x2="306" y2="213" stroke="#333" stroke-width="1.5" />
+  <line x1="276" y1="335" x2="306" y2="239" stroke="#333" stroke-width="1.5" />
+  <line x1="231" y1="425" x2="246" y2="425" stroke="#333" stroke-width="1.5" />
+  <line x1="231" y1="515" x2="246" y2="515" stroke="#333" stroke-width="1.5" />
+  <line x1="231" y1="605" x2="246" y2="605" stroke="#333" stroke-width="1.5" />
+  <line x1="231" y1="695" x2="246" y2="695" stroke="#333" stroke-width="1.5" />
+  <line x1="276" y1="425" x2="306" y2="521" stroke="#333" stroke-width="1.5" />
+  <line x1="276" y1="515" x2="306" y2="547" stroke="#333" stroke-width="1.5" />
+  <line x1="276" y1="605" x2="306" y2="573" stroke="#333" stroke-width="1.5" />
+  <line x1="276" y1="695" x2="306" y2="599" stroke="#333" stroke-width="1.5" />
 </svg>

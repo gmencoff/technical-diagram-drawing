@@ -2,14 +2,35 @@ import { ObjectTypeHandler, LayoutContext } from '../object-type-handler.js';
 import { AuthoringObject } from '../../types/authoring.js';
 import { SceneGraphNode, Point2D, Bounds2D } from '../../types/scene-graph.js';
 import { SvgPrimitive } from '../../types/svg-primitives.js';
+import { PropertyDefinition } from '../../types/property-definition.js';
+import { DEFAULT_STYLE, getMastLength } from '../../style-config.js';
 
-const GLYPH_WIDTH = 30;
-const GLYPH_HEIGHT = 60;
+const TRI_HEIGHT = 24;
+const TRI_HALF_WIDTH = TRI_HEIGHT * 10 / 18;
+
+function getGlyphWidth(): number {
+  return Math.ceil(TRI_HALF_WIDTH * 2);
+}
+
+function getGlyphHeight(): number {
+  return TRI_HEIGHT + getMastLength();
+}
 
 export const antennaElementHandler: ObjectTypeHandler = {
   typeName: 'antenna.Element',
 
-  properties: {},
+  properties: {
+    orientation: {
+      type: 'string',
+      required: false,
+      shortDescription: 'Direction the antenna points: up, down, left, right',
+      validate(value: unknown, propertyName: string): void {
+        if (typeof value !== 'string' || !['up', 'down', 'left', 'right'].includes(value)) {
+          throw new Error(`${propertyName} must be one of: up, down, left, right`);
+        }
+      },
+    },
+  } satisfies Record<string, PropertyDefinition>,
 
   expand(obj: AuthoringObject): SceneGraphNode {
     const id = obj.id;
@@ -21,24 +42,30 @@ export const antennaElementHandler: ObjectTypeHandler = {
       features: [
         { kind: 'anchor', path: `${id}.center`, sourceObjectId: id, generatedBy: 'antenna.Element' },
         { kind: 'port', path: `${id}.port`, role: 'bidirectional', sourceObjectId: id, generatedBy: 'antenna.Element' },
-        { kind: 'metric', path: `${id}.bounds`, sourceObjectId: id, generatedBy: 'antenna.Element', value: { width: GLYPH_WIDTH, height: GLYPH_HEIGHT } },
+        { kind: 'metric', path: `${id}.bounds`, sourceObjectId: id, generatedBy: 'antenna.Element', value: { width: getGlyphWidth(), height: getGlyphHeight() } },
       ],
-      properties: {},
+      properties: { orientation: obj.orientation },
     };
+  },
+
+  getChainGaps(): { inputGap: number; outputGap: number } {
+    const gaps = DEFAULT_STYLE.chainGaps['antenna.Element'];
+    return gaps || { inputGap: 0, outputGap: 0 };
   },
 
   assignPortPositions(node: SceneGraphNode, center: Point2D, bounds: Bounds2D, _context: LayoutContext): void {
     const orientation = (node.properties.orientation as string) || 'down';
     let value: Point2D;
 
+    // Port is at the mast end (opposite the radiating direction)
     if (orientation === 'right') {
-      value = { x: center.x + bounds.width / 2, y: center.y };
-    } else if (orientation === 'left') {
       value = { x: center.x - bounds.width / 2, y: center.y };
+    } else if (orientation === 'left') {
+      value = { x: center.x + bounds.width / 2, y: center.y };
     } else if (orientation === 'up') {
-      value = { x: center.x, y: center.y - bounds.height / 2 };
-    } else {
       value = { x: center.x, y: center.y + bounds.height / 2 };
+    } else {
+      value = { x: center.x, y: center.y - bounds.height / 2 };
     }
 
     const portFeature = node.features.find(f => f.kind === 'port' && f.path === `${node.id}.port`);
@@ -49,9 +76,9 @@ export const antennaElementHandler: ObjectTypeHandler = {
 
   getLayoutBounds(_node: SceneGraphNode, context: LayoutContext): Bounds2D {
     if (context.flowDirection === 'left-to-right' || context.flowDirection === 'right-to-left') {
-      return { width: GLYPH_HEIGHT, height: GLYPH_WIDTH };
+      return { width: getGlyphHeight(), height: getGlyphWidth() };
     }
-    return { width: GLYPH_WIDTH, height: GLYPH_HEIGHT };
+    return { width: getGlyphWidth(), height: getGlyphHeight() };
   },
 
   render(node: SceneGraphNode): SvgPrimitive[] {
@@ -66,26 +93,53 @@ export const antennaElementHandler: ObjectTypeHandler = {
       return renderHorizontal(node.id, x, y, 'right');
     } else if (orientation === 'left') {
       return renderHorizontal(node.id, x, y, 'left');
+    } else if (orientation === 'up') {
+      return renderVertical(node.id, x, y, 'up');
     }
-    return renderVertical(node.id, x, y);
+    return renderVertical(node.id, x, y, 'down');
   },
 };
 
-function renderVertical(id: string, x: number, y: number): SvgPrimitive[] {
-  const mastTop = y - GLYPH_HEIGHT / 2;
-  const mastBottom = y + GLYPH_HEIGHT / 2;
-  const triHeight = 24;
-  const triHalfWidth = triHeight * 10 / 18;
+function renderVertical(id: string, x: number, y: number, direction: 'up' | 'down'): SvgPrimitive[] {
+  const halfHeight = getGlyphHeight() / 2;
+
+  if (direction === 'down') {
+    // Triangle (radiating) at bottom, mast on top
+    const triBottom = y + halfHeight;
+    const mastStart = triBottom - TRI_HEIGHT;
+    const mastEnd = y - halfHeight;
+
+    return [{
+      kind: 'group',
+      id,
+      children: [
+        { kind: 'line', x1: x, y1: mastEnd, x2: x, y2: mastStart, stroke: DEFAULT_STYLE.stroke, strokeWidth: DEFAULT_STYLE.strokeWidth },
+        {
+          kind: 'path',
+          d: `M${x - TRI_HALF_WIDTH} ${triBottom} L${x + TRI_HALF_WIDTH} ${triBottom} L${x} ${mastStart} Z`,
+          stroke: DEFAULT_STYLE.stroke,
+          strokeWidth: DEFAULT_STYLE.strokeWidth,
+          fill: 'none',
+        },
+      ],
+    }];
+  }
+
+  // Triangle (radiating) at top, mast on bottom
+  const triTop = y - halfHeight;
+  const mastStart = triTop + TRI_HEIGHT;
+  const mastEnd = y + halfHeight;
 
   return [{
     kind: 'group',
     id,
     children: [
-      { kind: 'line', x1: x, y1: mastTop + triHeight, x2: x, y2: mastBottom, stroke: '#333' },
+      { kind: 'line', x1: x, y1: mastStart, x2: x, y2: mastEnd, stroke: DEFAULT_STYLE.stroke, strokeWidth: DEFAULT_STYLE.strokeWidth },
       {
         kind: 'path',
-        d: `M${x - triHalfWidth} ${mastTop} L${x + triHalfWidth} ${mastTop} L${x} ${mastTop + triHeight} Z`,
-        stroke: '#333',
+        d: `M${x - TRI_HALF_WIDTH} ${triTop} L${x + TRI_HALF_WIDTH} ${triTop} L${x} ${mastStart} Z`,
+        stroke: DEFAULT_STYLE.stroke,
+        strokeWidth: DEFAULT_STYLE.strokeWidth,
         fill: 'none',
       },
     ],
@@ -93,43 +147,45 @@ function renderVertical(id: string, x: number, y: number): SvgPrimitive[] {
 }
 
 function renderHorizontal(id: string, x: number, y: number, direction: 'left' | 'right'): SvgPrimitive[] {
-  const triHeight = 24;
-  const triHalfWidth = triHeight * 10 / 18;
-  const halfLength = GLYPH_HEIGHT / 2;
+  const halfLength = getGlyphHeight() / 2;
 
   if (direction === 'right') {
-    const triTipX = x - halfLength;
-    const mastStartX = triTipX + triHeight;
-    const mastEndX = x + halfLength;
+    // Triangle (radiating) on right, mast on left
+    const triTipX = x + halfLength;
+    const mastStartX = triTipX - TRI_HEIGHT;
+    const mastEndX = x - halfLength;
 
     return [{
       kind: 'group',
       id,
       children: [
-        { kind: 'line', x1: mastStartX, y1: y, x2: mastEndX, y2: y, stroke: '#333' },
+        { kind: 'line', x1: mastEndX, y1: y, x2: mastStartX, y2: y, stroke: DEFAULT_STYLE.stroke, strokeWidth: DEFAULT_STYLE.strokeWidth },
         {
           kind: 'path',
-          d: `M${triTipX} ${y - triHalfWidth} L${triTipX} ${y + triHalfWidth} L${mastStartX} ${y} Z`,
-          stroke: '#333',
+          d: `M${triTipX} ${y - TRI_HALF_WIDTH} L${triTipX} ${y + TRI_HALF_WIDTH} L${mastStartX} ${y} Z`,
+          stroke: DEFAULT_STYLE.stroke,
+          strokeWidth: DEFAULT_STYLE.strokeWidth,
           fill: 'none',
         },
       ],
     }];
   }
 
-  const triTipX = x + halfLength;
-  const mastStartX = triTipX - triHeight;
-  const mastEndX = x - halfLength;
+  // Triangle (radiating) on left, mast on right
+  const triTipX = x - halfLength;
+  const mastStartX = triTipX + TRI_HEIGHT;
+  const mastEndX = x + halfLength;
 
   return [{
     kind: 'group',
     id,
     children: [
-      { kind: 'line', x1: mastEndX, y1: y, x2: mastStartX, y2: y, stroke: '#333' },
+      { kind: 'line', x1: mastStartX, y1: y, x2: mastEndX, y2: y, stroke: DEFAULT_STYLE.stroke, strokeWidth: DEFAULT_STYLE.strokeWidth },
       {
         kind: 'path',
-        d: `M${triTipX} ${y - triHalfWidth} L${triTipX} ${y + triHalfWidth} L${mastStartX} ${y} Z`,
-        stroke: '#333',
+        d: `M${triTipX} ${y - TRI_HALF_WIDTH} L${triTipX} ${y + TRI_HALF_WIDTH} L${mastStartX} ${y} Z`,
+        stroke: DEFAULT_STYLE.stroke,
+        strokeWidth: DEFAULT_STYLE.strokeWidth,
         fill: 'none',
       },
     ],

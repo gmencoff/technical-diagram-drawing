@@ -3,6 +3,7 @@ import { AuthoringObject } from '../../types/authoring.js';
 import { SceneGraphNode, Point2D } from '../../types/scene-graph.js';
 import { SvgPrimitive } from '../../types/svg-primitives.js';
 import { PropertyDefinition } from '../../types/property-definition.js';
+import { DEFAULT_STYLE } from '../../style-config.js';
 
 const DEFAULT_WIDTH = 80;
 const DEFAULT_HEIGHT = 40;
@@ -44,6 +45,17 @@ export const rfBlockHandler: ObjectTypeHandler = {
         }
       },
     },
+    textOrientation: {
+      type: 'string',
+      required: false,
+      default: 'horizontal',
+      shortDescription: 'Text orientation: horizontal or vertical',
+      validate(value: unknown, propertyName: string): void {
+        if (typeof value !== 'string' || !['horizontal', 'vertical'].includes(value)) {
+          throw new Error(`${propertyName} must be "horizontal" or "vertical"`);
+        }
+      },
+    },
   } satisfies Record<string, PropertyDefinition>,
 
   expand(obj: AuthoringObject): SceneGraphNode {
@@ -81,8 +93,13 @@ export const rfBlockHandler: ObjectTypeHandler = {
       sourceObjectId: id,
       generatedBy: 'rf.Block',
       features,
-      properties: { label: obj.label, inputPorts, outputPorts },
+      properties: { label: obj.label, inputPorts, outputPorts, textOrientation: obj.textOrientation || 'horizontal' },
     };
+  },
+
+  getChainGaps(): { inputGap: number; outputGap: number } {
+    const gaps = DEFAULT_STYLE.chainGaps['rf.Block'];
+    return gaps || { inputGap: 15, outputGap: 15 };
   },
 
   render(node: SceneGraphNode): SvgPrimitive[] {
@@ -95,6 +112,7 @@ export const rfBlockHandler: ObjectTypeHandler = {
     const width = boundsFeature?.kind === 'metric' && boundsFeature.value ? boundsFeature.value.width : DEFAULT_WIDTH;
     const height = boundsFeature?.kind === 'metric' && boundsFeature.value ? boundsFeature.value.height : DEFAULT_HEIGHT;
     const label = node.properties.label as string;
+    const textOrientation = (node.properties.textOrientation as string) || 'horizontal';
 
     return [{
       kind: 'group',
@@ -103,7 +121,8 @@ export const rfBlockHandler: ObjectTypeHandler = {
         {
           kind: 'path',
           d: `M${x - width / 2} ${y - height / 2} h${width} v${height} h${-width} Z`,
-          stroke: '#333',
+          stroke: DEFAULT_STYLE.stroke,
+          strokeWidth: DEFAULT_STYLE.strokeWidth,
           fill: 'none',
         },
         {
@@ -111,8 +130,12 @@ export const rfBlockHandler: ObjectTypeHandler = {
           x,
           y: y + 4,
           content: label,
-          fontSize: 12,
+          fontSize: DEFAULT_STYLE.text.fontSize,
+          fontFamily: DEFAULT_STYLE.text.fontFamily,
+          fontWeight: DEFAULT_STYLE.text.fontWeight,
+          fill: DEFAULT_STYLE.text.fill,
           textAnchor: 'middle',
+          transform: textOrientation === 'vertical' ? `rotate(-90, ${x}, ${y})` : undefined,
         },
       ],
     }];

@@ -39,10 +39,10 @@ describe('full pipeline', () => {
   it('computes the circle radius as the distance between tx and rx centers', () => {
     const { svg } = renderDiagram(exampleYaml);
 
-    // tx is placed at x = padding(50) + width(30)/2 = 65
-    // rx is placed at x = 50 + 30 + gap(100) + 30/2 = 195
-    // distance = 195 - 65 = 130 (both at same y, so pure horizontal)
-    expect(svg).toMatch(/r="130"/);
+    // tx is placed at x = padding(50) + width(27)/2 = 63.5
+    // rx is placed at x = 50 + 27 + gap(100) + 27/2 = 190.5
+    // distance = 190.5 - 63.5 = 127 (both at same y, so pure horizontal)
+    expect(svg).toMatch(/r="127"/);
   });
 });
 
@@ -83,6 +83,21 @@ describe('hybrid array receiver', () => {
     const height = parseInt(match![2]);
     expect(width).toBeLessThan(700);
     expect(height).toBeLessThan(900);
+  });
+
+  it('antenna in chain has port on the output side (right) for left-to-right flow', () => {
+    const { svg } = renderDiagram(hybridArrayYaml);
+    // In a left-to-right chain, the receive antenna radiates left (triangle on left)
+    // and has its mast/port on the right, connecting to the next element.
+    // The connection from antenna port to phase shifter input must flow left-to-right (x1 < x2).
+    const lines = svg!.split('\n');
+    const connectionLines = lines.filter(l => l.trim().startsWith('<line') && !lines[lines.indexOf(l) - 1]?.includes('<g'));
+    const firstConnection = connectionLines[0];
+    const match = firstConnection.match(/x1="([\d.]+)".*x2="([\d.]+)"/);
+    expect(match).toBeTruthy();
+    const x1 = parseFloat(match![1]);
+    const x2 = parseFloat(match![2]);
+    expect(x1).toBeLessThan(x2);
   });
 });
 

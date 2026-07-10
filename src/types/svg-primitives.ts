@@ -4,6 +4,7 @@ export interface SvgCircle {
   cy: number;
   r: number;
   stroke?: string;
+  strokeWidth?: number;
   strokeDasharray?: string;
   fill?: string;
 }
@@ -15,12 +16,14 @@ export interface SvgLine {
   x2: number;
   y2: number;
   stroke?: string;
+  strokeWidth?: number;
 }
 
 export interface SvgPath {
   kind: 'path';
   d: string;
   stroke?: string;
+  strokeWidth?: number;
   fill?: string;
 }
 
@@ -30,7 +33,11 @@ export interface SvgText {
   y: number;
   content: string;
   fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string;
+  fill?: string;
   textAnchor?: 'start' | 'middle' | 'end';
+  transform?: string;
 }
 
 export interface SvgGroup {

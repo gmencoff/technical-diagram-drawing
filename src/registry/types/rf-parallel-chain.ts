@@ -4,9 +4,19 @@ import { SceneGraphNode, SceneGraph, ResolvedConnection, Bounds2D, Point2D } fro
 import { SvgPrimitive } from '../../types/svg-primitives.js';
 import { PropertyDefinition } from '../../types/property-definition.js';
 import { getBounds, assignAnchorValue } from '../../layout-utils.js';
+import { DEFAULT_STYLE } from '../../style-config.js';
 
 const DEFAULT_GAP = 100;
 const PARALLEL_SPACING = 60;
+
+function getGapBetween(leftHandler: ObjectTypeHandler | undefined, rightHandler: ObjectTypeHandler | undefined, leftNode: SceneGraphNode, rightNode: SceneGraphNode): number {
+  const leftGaps = leftHandler?.getChainGaps?.(leftNode);
+  const rightGaps = rightHandler?.getChainGaps?.(rightNode);
+  if (leftGaps || rightGaps) {
+    return (leftGaps?.outputGap ?? 15) + (rightGaps?.inputGap ?? 15);
+  }
+  return DEFAULT_GAP;
+}
 
 export const rfParallelChainHandler: ObjectTypeHandler = {
   typeName: 'rf.ParallelChain',
@@ -150,7 +160,11 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
         } else {
           bounds = childHandler?.getLayoutBounds?.(path[j], { flowDirection: 'left-to-right' }) ?? getBounds(path[j]);
         }
-        pathWidth += bounds.width + (j < path.length - 1 ? DEFAULT_GAP : 0);
+        pathWidth += bounds.width;
+        if (j < path.length - 1) {
+          const nextHandler = registry.lookup(path[j + 1].type);
+          pathWidth += getGapBetween(childHandler, nextHandler, path[j], path[j + 1]);
+        }
         pathHeight = Math.max(pathHeight, bounds.height);
       }
       maxPathWidth = Math.max(maxPathWidth, pathWidth);
@@ -172,17 +186,24 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
         if (childHandler?.layoutChildren) {
           childHandler.layoutChildren(elem, sceneGraph, cursorX, pathY, registry);
           const childBounds = getBounds(elem);
-          cursorX += childBounds.width + DEFAULT_GAP;
+          cursorX += childBounds.width;
         } else {
           const bounds = childHandler?.getLayoutBounds?.(elem, { flowDirection: 'left-to-right' }) ?? getBounds(elem);
           const cx = cursorX + bounds.width / 2;
           const cy = pathY + singlePathHeight / 2;
           assignAnchorValue(elem, `${elem.id}.center`, { x: cx, y: cy });
 
-          elem.properties.orientation = j === path.length - 1 ? 'left' : 'right';
+          if (!elem.properties.orientation) {
+            elem.properties.orientation = j === path.length - 1 ? 'right' : 'left';
+          }
           elem.properties.flowDirection = 'left-to-right';
 
-          cursorX += bounds.width + DEFAULT_GAP;
+          cursorX += bounds.width;
+        }
+
+        if (j < path.length - 1) {
+          const nextHandler = registry.lookup(path[j + 1].type);
+          cursorX += getGapBetween(childHandler, nextHandler, elem, path[j + 1]);
         }
       }
     }

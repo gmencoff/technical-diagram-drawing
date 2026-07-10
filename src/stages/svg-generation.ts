@@ -1,6 +1,7 @@
 import { SceneGraph, Point2D } from '../types/scene-graph.js';
 import { SvgPrimitive } from '../types/svg-primitives.js';
 import { ObjectTypeHandler, HandlerLookup } from '../registry/object-type-handler.js';
+import { DEFAULT_STYLE } from '../style-config.js';
 
 export function svgGeneration(sceneGraph: SceneGraph, handlers: Map<string, ObjectTypeHandler>, registry: HandlerLookup): SvgPrimitive[] {
   const primitives: SvgPrimitive[] = [];
@@ -22,7 +23,8 @@ export function svgGeneration(sceneGraph: SceneGraph, handlers: Map<string, Obje
         y1: fromPoint.y,
         x2: toPoint.x,
         y2: toPoint.y,
-        stroke: '#333',
+        stroke: DEFAULT_STYLE.stroke,
+        strokeWidth: DEFAULT_STYLE.connectionStrokeWidth,
       });
     }
   }
