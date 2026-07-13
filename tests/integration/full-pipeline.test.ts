@@ -149,4 +149,74 @@ objects:
     expect(result.success).toBe(false);
     expect(result.errors![0].stage).toBe('reference-validation');
   });
+
+  it('reports error when signal generator is not first in a series chain', () => {
+    const yaml = `
+objects:
+  - type: rf.SeriesChain
+    id: chain
+    objects:
+      - type: rf.Block
+        id: amp
+        label: Amp
+      - type: rf.SignalGenerator
+        id: sigGen
+`;
+    const result = renderDiagram(yaml);
+    expect(result.success).toBe(false);
+    expect(result.errors!.some(e => e.message.includes('sigGen'))).toBe(true);
+  });
+
+  it('reports error when signal generator is not first in a parallel chain', () => {
+    const yaml = `
+objects:
+  - type: rf.ParallelChain
+    id: paths
+    count: 2
+    objects:
+      - type: rf.Block
+        id: amp
+        label: Amp
+      - type: rf.SignalGenerator
+        id: sigGen
+`;
+    const result = renderDiagram(yaml);
+    expect(result.success).toBe(false);
+    expect(result.errors!.some(e => e.message.includes('sigGen'))).toBe(true);
+  });
+
+  it('reports error when rf.Block with inputPorts: 0 is not first in a series chain', () => {
+    const yaml = `
+objects:
+  - type: rf.SeriesChain
+    id: chain
+    objects:
+      - type: rf.Block
+        id: amp
+        label: Amp
+      - type: rf.Block
+        id: sink
+        label: Sink
+        inputPorts: 0
+`;
+    const result = renderDiagram(yaml);
+    expect(result.success).toBe(false);
+    expect(result.errors!.some(e => e.message.includes('sink'))).toBe(true);
+  });
+
+  it('allows signal generator as first element in a series chain', () => {
+    const yaml = `
+objects:
+  - type: rf.SeriesChain
+    id: chain
+    objects:
+      - type: rf.SignalGenerator
+        id: sigGen
+      - type: rf.Block
+        id: amp
+        label: Amp
+`;
+    const result = renderDiagram(yaml);
+    expect(result.success).toBe(true);
+  });
 });

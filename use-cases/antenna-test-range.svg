@@ -2,7 +2,6 @@
   <g id="sigGen">
     <circle cx="65" cy="200" r="15" stroke="#333" stroke-width="1.5" fill="none" />
     <path d="M56 200 C60.5 192.5 60.5 192.5 65 200 S69.5 207.5 74 200" stroke="#333" stroke-width="1.5" fill="none" />
-    <line x1="45" y1="200" x2="50" y2="200" stroke="#333" stroke-width="1.5" />
     <line x1="80" y1="200" x2="85" y2="200" stroke="#333" stroke-width="1.5" />
   </g>
   <g id="splitter">

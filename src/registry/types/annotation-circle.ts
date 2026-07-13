@@ -2,32 +2,20 @@ import { ObjectTypeHandler } from '../object-type-handler.js';
 import { AuthoringObject } from '../../types/authoring.js';
 import { SceneGraphNode, Point2D } from '../../types/scene-graph.js';
 import { SvgPrimitive } from '../../types/svg-primitives.js';
-import { PropertyDefinition } from '../../types/property-definition.js';
+import { PropertyDefinition, ExpressionPropertyDefinition } from '../../types/property-definition.js';
 
 export const annotationCircleHandler: ObjectTypeHandler = {
   typeName: 'annotation.Circle',
 
   properties: {
-    center: {
-      type: 'expression',
+    center: new ExpressionPropertyDefinition({
       required: true,
       shortDescription: 'Center point of the circle (reference to an anchor)',
-      validate(value: unknown, propertyName: string): void {
-        if (typeof value !== 'string') {
-          throw new Error(`${propertyName} must be a reference string`);
-        }
-      },
-    },
-    radius: {
-      type: 'expression',
+    }),
+    radius: new ExpressionPropertyDefinition({
       required: true,
       shortDescription: 'Radius of the circle (expression or number)',
-      validate(value: unknown, propertyName: string): void {
-        if (typeof value !== 'string' && typeof value !== 'number') {
-          throw new Error(`${propertyName} must be a string expression or number`);
-        }
-      },
-    },
+    }),
   } satisfies Record<string, PropertyDefinition>,
 
   expand(obj: AuthoringObject): SceneGraphNode {

@@ -2,7 +2,7 @@ import { ObjectTypeHandler, HandlerLookup, CompositeExpansionResult, CompositeLa
 import { AuthoringObject } from '../../types/authoring.js';
 import { SceneGraphNode, SceneGraph, ResolvedConnection, Bounds2D } from '../../types/scene-graph.js';
 import { SvgPrimitive } from '../../types/svg-primitives.js';
-import { PropertyDefinition } from '../../types/property-definition.js';
+import { PropertyDefinition, ArrayPropertyDefinition, StringPropertyDefinition, NumberPropertyDefinition } from '../../types/property-definition.js';
 import { getBounds, assignAnchorValue, shiftNodeVertically, shiftNodeHorizontally } from '../../layout-utils.js';
 
 const DEFAULT_GAP = 100;
@@ -11,39 +11,22 @@ export const layoutGroupHandler: ObjectTypeHandler = {
   typeName: 'layout.Group',
 
   properties: {
-    objects: {
-      type: 'array',
+    objects: new ArrayPropertyDefinition({
       required: true,
       shortDescription: 'Array of child objects in this group',
-      validate(value: unknown, propertyName: string): void {
-        if (!Array.isArray(value)) {
-          throw new Error(`${propertyName} must be an array`);
-        }
-      },
-    },
-    direction: {
-      type: 'string',
+    }),
+    direction: new StringPropertyDefinition({
       required: false,
       default: 'left-to-right',
+      allowedValues: ['left-to-right', 'right-to-left', 'top-to-bottom', 'bottom-to-top'],
       shortDescription: 'Layout direction for children',
-      validate(value: unknown, propertyName: string): void {
-        const valid = ['left-to-right', 'right-to-left', 'top-to-bottom', 'bottom-to-top'];
-        if (typeof value !== 'string' || !valid.includes(value)) {
-          throw new Error(`${propertyName} must be one of: ${valid.join(', ')}`);
-        }
-      },
-    },
-    gap: {
-      type: 'number',
+    }),
+    gap: new NumberPropertyDefinition({
       required: false,
       default: 80,
+      min: 0,
       shortDescription: 'Gap between children',
-      validate(value: unknown, propertyName: string): void {
-        if (typeof value !== 'number' || value < 0) {
-          throw new Error(`${propertyName} must be a non-negative number`);
-        }
-      },
-    },
+    }),
   } satisfies Record<string, PropertyDefinition>,
 
   expand(obj: AuthoringObject): SceneGraphNode {

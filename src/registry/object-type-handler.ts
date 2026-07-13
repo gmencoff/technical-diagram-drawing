@@ -30,6 +30,7 @@ export interface ObjectTypeHandler {
   expandComposite?(obj: AuthoringObject, registry: HandlerLookup): CompositeExpansionResult;
   render(node: SceneGraphNode): SvgPrimitive[];
 
+  validateChildren?(obj: AuthoringObject, childHandlers: Map<string, ObjectTypeHandler>, registry: HandlerLookup): string[];
   layoutChildren?(node: SceneGraphNode, sceneGraph: SceneGraph, offsetX: number, offsetY: number, registry: HandlerLookup): CompositeLayoutResult;
   getLayoutBounds?(node: SceneGraphNode, context: LayoutContext): Bounds2D;
   getChainGaps?(node: SceneGraphNode): { inputGap: number; outputGap: number };

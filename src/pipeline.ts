@@ -38,7 +38,7 @@ export function renderDiagram(yamlSource: string): PipelineResult {
   }
   const { handlers } = lookupResult!;
 
-  const validationErrors = localValidation(doc, handlers);
+  const validationErrors = localValidation(doc, handlers, registry);
   if (validationErrors.length > 0) {
     return { success: false, errors: validationErrors };
   }

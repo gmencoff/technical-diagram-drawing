@@ -2,7 +2,7 @@ import { ObjectTypeHandler } from '../object-type-handler.js';
 import { AuthoringObject } from '../../types/authoring.js';
 import { SceneGraphNode, Point2D } from '../../types/scene-graph.js';
 import { SvgPrimitive } from '../../types/svg-primitives.js';
-import { PropertyDefinition } from '../../types/property-definition.js';
+import { PropertyDefinition, StringPropertyDefinition, IntegerPropertyDefinition } from '../../types/property-definition.js';
 import { DEFAULT_STYLE } from '../../style-config.js';
 
 const DEFAULT_WIDTH = 80;
@@ -14,49 +14,28 @@ export const rfBlockHandler: ObjectTypeHandler = {
   typeName: 'rf.Block',
 
   properties: {
-    label: {
-      type: 'string',
+    label: new StringPropertyDefinition({
       required: true,
       shortDescription: 'Text label displayed in the block',
-      validate(value: unknown, propertyName: string): void {
-        if (typeof value !== 'string') {
-          throw new Error(`${propertyName} must be a string`);
-        }
-      },
-    },
-    inputPorts: {
-      type: 'number',
+    }),
+    inputPorts: new IntegerPropertyDefinition({
       required: false,
       default: 1,
+      min: 0,
       shortDescription: 'Number of input ports on the left edge',
-      validate(value: unknown, propertyName: string): void {
-        if (typeof value !== 'number' || value < 1 || !Number.isInteger(value)) {
-          throw new Error(`${propertyName} must be a positive integer`);
-        }
-      },
-    },
-    outputPorts: {
-      type: 'number',
+    }),
+    outputPorts: new IntegerPropertyDefinition({
       required: false,
       default: 1,
+      min: 0,
       shortDescription: 'Number of output ports on the right edge',
-      validate(value: unknown, propertyName: string): void {
-        if (typeof value !== 'number' || value < 0 || !Number.isInteger(value)) {
-          throw new Error(`${propertyName} must be a positive integer`);
-        }
-      },
-    },
-    textOrientation: {
-      type: 'string',
+    }),
+    textOrientation: new StringPropertyDefinition({
       required: false,
       default: 'horizontal',
+      allowedValues: ['horizontal', 'vertical'],
       shortDescription: 'Text orientation: horizontal or vertical',
-      validate(value: unknown, propertyName: string): void {
-        if (typeof value !== 'string' || !['horizontal', 'vertical'].includes(value)) {
-          throw new Error(`${propertyName} must be "horizontal" or "vertical"`);
-        }
-      },
-    },
+    }),
   } satisfies Record<string, PropertyDefinition>,
 
   expand(obj: AuthoringObject): SceneGraphNode {

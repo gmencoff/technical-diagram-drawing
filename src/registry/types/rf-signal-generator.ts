@@ -21,7 +21,6 @@ export const rfSignalGeneratorHandler: ObjectTypeHandler = {
       generatedBy: 'rf.SignalGenerator',
       features: [
         { kind: 'anchor', path: `${id}.center`, sourceObjectId: id, generatedBy: 'rf.SignalGenerator' },
-        { kind: 'port', path: `${id}.input`, role: 'input', sourceObjectId: id, generatedBy: 'rf.SignalGenerator' },
         { kind: 'port', path: `${id}.output`, role: 'output', sourceObjectId: id, generatedBy: 'rf.SignalGenerator' },
         { kind: 'metric', path: `${id}.bounds`, sourceObjectId: id, generatedBy: 'rf.SignalGenerator', value: { width: DIAMETER, height: DIAMETER } },
       ],
@@ -30,7 +29,7 @@ export const rfSignalGeneratorHandler: ObjectTypeHandler = {
   },
 
   getChainGaps(): { inputGap: number; outputGap: number } {
-    return { inputGap: 15, outputGap: 15 };
+    return { inputGap: 0, outputGap: 15 };
   },
 
   render(node: SceneGraphNode): SvgPrimitive[] {
@@ -67,13 +66,6 @@ export const rfSignalGeneratorHandler: ObjectTypeHandler = {
           stroke: DEFAULT_STYLE.stroke,
           strokeWidth: DEFAULT_STYLE.strokeWidth,
           fill: 'none',
-        },
-        {
-          kind: 'line',
-          x1: x - RADIUS - stub, y1: y,
-          x2: x - RADIUS, y2: y,
-          stroke: DEFAULT_STYLE.stroke,
-          strokeWidth: DEFAULT_STYLE.strokeWidth,
         },
         {
           kind: 'line',

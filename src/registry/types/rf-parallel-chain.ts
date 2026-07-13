@@ -2,7 +2,7 @@ import { ObjectTypeHandler, HandlerLookup, CompositeExpansionResult, CompositeLa
 import { AuthoringObject } from '../../types/authoring.js';
 import { SceneGraphNode, SceneGraph, ResolvedConnection, Bounds2D, Point2D } from '../../types/scene-graph.js';
 import { SvgPrimitive } from '../../types/svg-primitives.js';
-import { PropertyDefinition } from '../../types/property-definition.js';
+import { PropertyDefinition, IntegerPropertyDefinition, ArrayPropertyDefinition } from '../../types/property-definition.js';
 import { getBounds, assignAnchorValue } from '../../layout-utils.js';
 import { DEFAULT_STYLE } from '../../style-config.js';
 
@@ -22,27 +22,40 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
   typeName: 'rf.ParallelChain',
 
   properties: {
-    count: {
-      type: 'number',
+    count: new IntegerPropertyDefinition({
       required: true,
+      min: 1,
       shortDescription: 'Number of parallel paths',
-      validate(value: unknown, propertyName: string): void {
-        if (typeof value !== 'number' || value < 1 || !Number.isInteger(value)) {
-          throw new Error(`${propertyName} must be a positive integer`);
-        }
-      },
-    },
-    objects: {
-      type: 'array',
+    }),
+    objects: new ArrayPropertyDefinition({
       required: true,
       shortDescription: 'Array of element types forming one series path',
-      validate(value: unknown, propertyName: string): void {
-        if (!Array.isArray(value)) {
-          throw new Error(`${propertyName} must be an array`);
-        }
-      },
-    },
+    }),
   } satisfies Record<string, PropertyDefinition>,
+
+  validateChildren(obj: AuthoringObject, childHandlers: Map<string, ObjectTypeHandler>, registry: HandlerLookup): string[] {
+    const errors: string[] = [];
+    const children = obj.objects as AuthoringObject[];
+    if (!children) return errors;
+
+    for (let i = 1; i < children.length; i++) {
+      const child = children[i];
+      const handler = childHandlers.get(child.id);
+      if (!handler) continue;
+      let nodes: SceneGraphNode[];
+      if (handler.expandComposite) {
+        const result = handler.expandComposite(child, registry);
+        nodes = result.nodes;
+      } else {
+        nodes = [handler.expand(child)];
+      }
+      const inputPorts = getInputPorts(child.id, nodes);
+      if (inputPorts.length === 0) {
+        errors.push(`"${child.id}" has no input port and cannot be placed after "${children[i - 1].id}" in chain "${obj.id}"`);
+      }
+    }
+    return errors;
+  },
 
   expand(obj: AuthoringObject): SceneGraphNode {
     const id = obj.id;

@@ -2,7 +2,7 @@ import { ObjectTypeHandler, HandlerLookup, CompositeExpansionResult, CompositeLa
 import { AuthoringObject } from '../../types/authoring.js';
 import { SceneGraphNode, SceneGraph, ResolvedConnection, Bounds2D, Point2D } from '../../types/scene-graph.js';
 import { SvgPrimitive } from '../../types/svg-primitives.js';
-import { PropertyDefinition } from '../../types/property-definition.js';
+import { PropertyDefinition, ArrayPropertyDefinition } from '../../types/property-definition.js';
 import { getBounds, assignAnchorValue, shiftNodeVertically } from '../../layout-utils.js';
 
 const DEFAULT_GAP = 100;
@@ -20,17 +20,35 @@ export const rfSeriesChainHandler: ObjectTypeHandler = {
   typeName: 'rf.SeriesChain',
 
   properties: {
-    objects: {
-      type: 'array',
+    objects: new ArrayPropertyDefinition({
       required: true,
       shortDescription: 'Array of objects connected in series',
-      validate(value: unknown, propertyName: string): void {
-        if (!Array.isArray(value)) {
-          throw new Error(`${propertyName} must be an array`);
-        }
-      },
-    },
+    }),
   } satisfies Record<string, PropertyDefinition>,
+
+  validateChildren(obj: AuthoringObject, childHandlers: Map<string, ObjectTypeHandler>, registry: HandlerLookup): string[] {
+    const errors: string[] = [];
+    const children = obj.objects as AuthoringObject[];
+    if (!children) return errors;
+
+    for (let i = 1; i < children.length; i++) {
+      const child = children[i];
+      const handler = childHandlers.get(child.id);
+      if (!handler) continue;
+      let nodes: SceneGraphNode[];
+      if (handler.expandComposite) {
+        const result = handler.expandComposite(child, registry);
+        nodes = result.nodes;
+      } else {
+        nodes = [handler.expand(child)];
+      }
+      const inputPorts = getInputPorts(child.id, nodes);
+      if (inputPorts.length === 0) {
+        errors.push(`"${child.id}" has no input port and cannot be placed after "${children[i - 1].id}" in chain "${obj.id}"`);
+      }
+    }
+    return errors;
+  },
 
   expand(obj: AuthoringObject): SceneGraphNode {
     const id = obj.id;

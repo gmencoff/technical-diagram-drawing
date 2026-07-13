@@ -2,7 +2,7 @@ import { ObjectTypeHandler, LayoutContext } from '../object-type-handler.js';
 import { AuthoringObject } from '../../types/authoring.js';
 import { SceneGraphNode, Point2D, Bounds2D } from '../../types/scene-graph.js';
 import { SvgPrimitive } from '../../types/svg-primitives.js';
-import { PropertyDefinition } from '../../types/property-definition.js';
+import { PropertyDefinition, StringPropertyDefinition } from '../../types/property-definition.js';
 import { DEFAULT_STYLE, getMastLength } from '../../style-config.js';
 
 const TRI_HEIGHT = 24;
@@ -20,16 +20,11 @@ export const antennaElementHandler: ObjectTypeHandler = {
   typeName: 'antenna.Element',
 
   properties: {
-    orientation: {
-      type: 'string',
+    orientation: new StringPropertyDefinition({
       required: false,
+      allowedValues: ['up', 'down', 'left', 'right'],
       shortDescription: 'Direction the antenna points: up, down, left, right',
-      validate(value: unknown, propertyName: string): void {
-        if (typeof value !== 'string' || !['up', 'down', 'left', 'right'].includes(value)) {
-          throw new Error(`${propertyName} must be one of: up, down, left, right`);
-        }
-      },
-    },
+    }),
   } satisfies Record<string, PropertyDefinition>,
 
   expand(obj: AuthoringObject): SceneGraphNode {
