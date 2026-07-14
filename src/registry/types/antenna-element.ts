@@ -4,6 +4,7 @@ import { SceneGraphNode, Point2D, Bounds2D } from '../../types/scene-graph.js';
 import { SvgPrimitive } from '../../types/svg-primitives.js';
 import { PropertyDefinition, StringPropertyDefinition } from '../../types/property-definition.js';
 import { DEFAULT_STYLE, getMastLength } from '../../style-config.js';
+import { assignAnchorValue } from '../../layout-utils.js';
 
 const TRI_HEIGHT = 24;
 const TRI_HALF_WIDTH = TRI_HEIGHT * 10 / 18;
@@ -36,6 +37,12 @@ export const antennaElementHandler: ObjectTypeHandler = {
       generatedBy: 'antenna.Element',
       features: [
         { kind: 'anchor', path: `${id}.center`, sourceObjectId: id, generatedBy: 'antenna.Element' },
+        { kind: 'anchor', path: `${id}.topLeft`, sourceObjectId: id, generatedBy: 'antenna.Element' },
+        { kind: 'anchor', path: `${id}.topRight`, sourceObjectId: id, generatedBy: 'antenna.Element' },
+        { kind: 'anchor', path: `${id}.top`, sourceObjectId: id, generatedBy: 'antenna.Element' },
+        { kind: 'anchor', path: `${id}.bottomLeft`, sourceObjectId: id, generatedBy: 'antenna.Element' },
+        { kind: 'anchor', path: `${id}.bottomRight`, sourceObjectId: id, generatedBy: 'antenna.Element' },
+        { kind: 'anchor', path: `${id}.bottom`, sourceObjectId: id, generatedBy: 'antenna.Element' },
         { kind: 'port', path: `${id}.port`, role: 'bidirectional', sourceObjectId: id, generatedBy: 'antenna.Element' },
         { kind: 'metric', path: `${id}.bounds`, sourceObjectId: id, generatedBy: 'antenna.Element', value: { width: getGlyphWidth(), height: getGlyphHeight() } },
       ],
@@ -66,6 +73,15 @@ export const antennaElementHandler: ObjectTypeHandler = {
     if (portFeature && portFeature.kind === 'port') {
       portFeature.value = value;
     }
+
+    const hw = bounds.width / 2;
+    const hh = bounds.height / 2;
+    assignAnchorValue(node, `${node.id}.topLeft`, { x: center.x - hw, y: center.y - hh });
+    assignAnchorValue(node, `${node.id}.topRight`, { x: center.x + hw, y: center.y - hh });
+    assignAnchorValue(node, `${node.id}.top`, { x: center.x, y: center.y - hh });
+    assignAnchorValue(node, `${node.id}.bottomLeft`, { x: center.x - hw, y: center.y + hh });
+    assignAnchorValue(node, `${node.id}.bottomRight`, { x: center.x + hw, y: center.y + hh });
+    assignAnchorValue(node, `${node.id}.bottom`, { x: center.x, y: center.y + hh });
   },
 
   getLayoutBounds(_node: SceneGraphNode, context: LayoutContext): Bounds2D {

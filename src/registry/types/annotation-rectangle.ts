@@ -22,6 +22,26 @@ export const annotationRectangleHandler: ObjectTypeHandler = {
       min: 0,
       shortDescription: 'Padding around the referenced region',
     }),
+    paddingTop: new NumberPropertyDefinition({
+      required: false,
+      min: 0,
+      shortDescription: 'Override padding on the top side',
+    }),
+    paddingRight: new NumberPropertyDefinition({
+      required: false,
+      min: 0,
+      shortDescription: 'Override padding on the right side',
+    }),
+    paddingBottom: new NumberPropertyDefinition({
+      required: false,
+      min: 0,
+      shortDescription: 'Override padding on the bottom side',
+    }),
+    paddingLeft: new NumberPropertyDefinition({
+      required: false,
+      min: 0,
+      shortDescription: 'Override padding on the left side',
+    }),
     stroke: new StringPropertyDefinition({
       required: false,
       shortDescription: 'Stroke color',
@@ -55,6 +75,10 @@ export const annotationRectangleHandler: ObjectTypeHandler = {
         topLeft: obj.topLeft,
         bottomRight: obj.bottomRight,
         padding: obj.padding ?? 10,
+        paddingTop: obj.paddingTop,
+        paddingRight: obj.paddingRight,
+        paddingBottom: obj.paddingBottom,
+        paddingLeft: obj.paddingLeft,
         stroke: obj.stroke ?? '#666',
         strokeDasharray: obj.strokeDasharray,
       },
@@ -65,13 +89,17 @@ export const annotationRectangleHandler: ObjectTypeHandler = {
     const topLeft = node.properties.topLeft as Point2D | undefined;
     const bottomRight = node.properties.bottomRight as Point2D | undefined;
     const padding = (node.properties.padding as number) ?? 10;
+    const padTop = (node.properties.paddingTop as number | undefined) ?? padding;
+    const padRight = (node.properties.paddingRight as number | undefined) ?? padding;
+    const padBottom = (node.properties.paddingBottom as number | undefined) ?? padding;
+    const padLeft = (node.properties.paddingLeft as number | undefined) ?? padding;
 
     if (!topLeft || !bottomRight) return [];
 
-    const x = topLeft.x - padding;
-    const y = topLeft.y - padding;
-    const width = (bottomRight.x - topLeft.x) + 2 * padding;
-    const height = (bottomRight.y - topLeft.y) + 2 * padding;
+    const x = topLeft.x - padLeft;
+    const y = topLeft.y - padTop;
+    const width = (bottomRight.x - topLeft.x) + padLeft + padRight;
+    const height = (bottomRight.y - topLeft.y) + padTop + padBottom;
 
     return [{
       kind: 'rect',

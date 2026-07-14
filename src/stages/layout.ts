@@ -190,12 +190,16 @@ function resolveAnnotationProperties(node: SceneGraphNode, sceneGraph: SceneGrap
     const tl = node.properties.topLeft as Point2D | undefined;
     const br = node.properties.bottomRight as Point2D | undefined;
     const padding = (node.properties.padding as number) ?? 10;
+    const padTop = (node.properties.paddingTop as number | undefined) ?? padding;
+    const padRight = (node.properties.paddingRight as number | undefined) ?? padding;
+    const padBottom = (node.properties.paddingBottom as number | undefined) ?? padding;
+    const padLeft = (node.properties.paddingLeft as number | undefined) ?? padding;
 
     if (tl && br) {
-      const x1 = tl.x - padding;
-      const y1 = tl.y - padding;
-      const x2 = br.x + padding;
-      const y2 = br.y + padding;
+      const x1 = tl.x - padLeft;
+      const y1 = tl.y - padTop;
+      const x2 = br.x + padRight;
+      const y2 = br.y + padBottom;
       const midX = (x1 + x2) / 2;
       const midY = (y1 + y2) / 2;
 
