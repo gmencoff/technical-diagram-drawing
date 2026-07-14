@@ -156,10 +156,11 @@ export const rfSeriesChainHandler: ObjectTypeHandler = {
       if (childHandler?.layoutChildren) {
         childBounds = childHandler.layoutChildren(child, sceneGraph, cursorX, offsetY, registry).bounds;
       } else {
-        const bounds = childHandler?.getLayoutBounds?.(child, {}) ?? getBounds(child);
+        const bounds = childHandler?.getLayoutBounds?.(child, { flowDirection: 'left-to-right' }) ?? getBounds(child);
         const cx = cursorX + bounds.width / 2;
         const cy = offsetY + bounds.height / 2;
         assignAnchorValue(child, `${child.id}.center`, { x: cx, y: cy });
+        child.properties.flowDirection = 'left-to-right';
         childBounds = bounds;
       }
       childBoundsArr.push(childBounds);

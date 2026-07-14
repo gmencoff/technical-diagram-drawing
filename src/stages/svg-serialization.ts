@@ -29,6 +29,9 @@ function renderPrimitive(primitive: SvgPrimitive, depth: number): string {
     case 'path':
       return `${indent}<path d="${primitive.d}"${optAttr('stroke', primitive.stroke)}${optAttr('stroke-width', primitive.strokeWidth?.toString())}${optAttr('fill', primitive.fill)} />`;
 
+    case 'rect':
+      return `${indent}<rect x="${primitive.x}" y="${primitive.y}" width="${primitive.width}" height="${primitive.height}"${optAttr('stroke', primitive.stroke)}${optAttr('stroke-width', primitive.strokeWidth?.toString())}${optAttr('stroke-dasharray', primitive.strokeDasharray)}${optAttr('fill', primitive.fill)} />`;
+
     case 'text':
       return `${indent}<text x="${primitive.x}" y="${primitive.y}"${optAttr('font-size', primitive.fontSize?.toString())}${optAttr('font-family', primitive.fontFamily)}${optAttr('font-weight', primitive.fontWeight)}${optAttr('fill', primitive.fill)}${optAttr('text-anchor', primitive.textAnchor)}${optAttr('transform', primitive.transform)}>${escapeXml(primitive.content)}</text>`;
 

@@ -118,6 +118,14 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
       generatedBy: 'rf.ParallelChain',
       features: [
         { kind: 'anchor', path: `${id}.center`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' },
+        { kind: 'anchor', path: `${id}.topLeft`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' },
+        { kind: 'anchor', path: `${id}.topRight`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' },
+        { kind: 'anchor', path: `${id}.bottomLeft`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' },
+        { kind: 'anchor', path: `${id}.bottomRight`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' },
+        { kind: 'anchor', path: `${id}.top`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' },
+        { kind: 'anchor', path: `${id}.bottom`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' },
+        { kind: 'anchor', path: `${id}.left`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' },
+        { kind: 'anchor', path: `${id}.right`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' },
         { kind: 'metric', path: `${id}.bounds`, sourceObjectId: id, generatedBy: 'rf.ParallelChain' },
       ],
       properties: { count, childIds },
@@ -226,6 +234,14 @@ export const rfParallelChainHandler: ObjectTypeHandler = {
       boundsFeature.value = { width: totalWidth, height: totalHeight };
     }
     assignAnchorValue(node, `${node.id}.center`, { x: offsetX + totalWidth / 2, y: offsetY + totalHeight / 2 });
+    assignAnchorValue(node, `${node.id}.topLeft`, { x: offsetX, y: offsetY });
+    assignAnchorValue(node, `${node.id}.topRight`, { x: offsetX + totalWidth, y: offsetY });
+    assignAnchorValue(node, `${node.id}.bottomLeft`, { x: offsetX, y: offsetY + totalHeight });
+    assignAnchorValue(node, `${node.id}.bottomRight`, { x: offsetX + totalWidth, y: offsetY + totalHeight });
+    assignAnchorValue(node, `${node.id}.top`, { x: offsetX + totalWidth / 2, y: offsetY });
+    assignAnchorValue(node, `${node.id}.bottom`, { x: offsetX + totalWidth / 2, y: offsetY + totalHeight });
+    assignAnchorValue(node, `${node.id}.left`, { x: offsetX, y: offsetY + totalHeight / 2 });
+    assignAnchorValue(node, `${node.id}.right`, { x: offsetX + totalWidth, y: offsetY + totalHeight / 2 });
 
     return { bounds: { width: totalWidth, height: totalHeight } };
   },

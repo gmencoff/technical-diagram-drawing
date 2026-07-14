@@ -40,6 +40,18 @@ export interface SvgText {
   transform?: string;
 }
 
+export interface SvgRect {
+  kind: 'rect';
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDasharray?: string;
+  fill?: string;
+}
+
 export interface SvgGroup {
   kind: 'group';
   children: SvgPrimitive[];
@@ -47,4 +59,4 @@ export interface SvgGroup {
   id?: string;
 }
 
-export type SvgPrimitive = SvgCircle | SvgLine | SvgPath | SvgText | SvgGroup;
+export type SvgPrimitive = SvgCircle | SvgLine | SvgPath | SvgText | SvgRect | SvgGroup;

@@ -29,3 +29,18 @@ objects:
         id: receiver
         label: Receiver
         outputPorts: 0
+
+  - type: annotation.Rectangle
+    id: arrayBox
+    topLeft: txFrontEnd.topLeft
+    bottomRight: txFrontEnd.bottomRight
+    padding: 15
+    stroke: green
+    strokeDasharray: "5 3"
+
+  - type: annotation.Text
+    id: arrayLabel
+    anchor: arrayBox.top
+    content: "Array Under Test"
+    offsetY: -12
+    fill: green

@@ -43,7 +43,7 @@ export function layout(sceneGraph: SceneGraph, registry: HandlerLookup): LayoutR
   assignPortPositions(sceneGraph, registry);
 
   for (const node of annotations) {
-    resolveAnnotationProperties(node, sceneGraph);
+    resolveAnnotationProperties(node, sceneGraph, registry);
   }
 
   const totalWidth = cursorX - DEFAULT_GAP + DEFAULT_PADDING;
@@ -168,9 +168,13 @@ function getFlowAwareBounds(node: SceneGraphNode, flowDirection: string, registr
   return getBounds(node);
 }
 
-function resolveAnnotationProperties(node: SceneGraphNode, sceneGraph: SceneGraph): void {
+function resolveAnnotationProperties(node: SceneGraphNode, sceneGraph: SceneGraph, registry: HandlerLookup): void {
+  const handler = registry.lookup(node.type);
+  const expressionProps = getExpressionPropertyNames(handler);
+
   for (const [propName, value] of Object.entries(node.properties)) {
     if (typeof value !== 'string') continue;
+    if (!expressionProps.has(propName)) continue;
 
     const expr = parseExpression(value);
     const resolved = evaluateExpression(expr, sceneGraph);
@@ -181,6 +185,54 @@ function resolveAnnotationProperties(node: SceneGraphNode, sceneGraph: SceneGrap
   if (resolvedCenter && typeof resolvedCenter === 'object' && 'x' in resolvedCenter) {
     assignAnchorValue(node, `${node.id}.center`, resolvedCenter as Point2D);
   }
+
+  if (node.type === 'annotation.Rectangle') {
+    const tl = node.properties.topLeft as Point2D | undefined;
+    const br = node.properties.bottomRight as Point2D | undefined;
+    const padding = (node.properties.padding as number) ?? 10;
+
+    if (tl && br) {
+      const x1 = tl.x - padding;
+      const y1 = tl.y - padding;
+      const x2 = br.x + padding;
+      const y2 = br.y + padding;
+      const midX = (x1 + x2) / 2;
+      const midY = (y1 + y2) / 2;
+
+      assignAnchorValue(node, `${node.id}.topLeft`, { x: x1, y: y1 });
+      assignAnchorValue(node, `${node.id}.topRight`, { x: x2, y: y1 });
+      assignAnchorValue(node, `${node.id}.bottomLeft`, { x: x1, y: y2 });
+      assignAnchorValue(node, `${node.id}.bottomRight`, { x: x2, y: y2 });
+      assignAnchorValue(node, `${node.id}.top`, { x: midX, y: y1 });
+      assignAnchorValue(node, `${node.id}.bottom`, { x: midX, y: y2 });
+      assignAnchorValue(node, `${node.id}.left`, { x: x1, y: midY });
+      assignAnchorValue(node, `${node.id}.right`, { x: x2, y: midY });
+      assignAnchorValue(node, `${node.id}.center`, { x: midX, y: midY });
+
+      const boundsFeature = node.features.find(f => f.kind === 'metric' && f.path === `${node.id}.bounds`);
+      if (boundsFeature && boundsFeature.kind === 'metric') {
+        boundsFeature.value = { width: x2 - x1, height: y2 - y1 };
+      }
+    }
+  }
+
+  if (node.type === 'annotation.Text') {
+    const anchor = node.properties.anchor as Point2D | undefined;
+    if (anchor) {
+      assignAnchorValue(node, `${node.id}.center`, anchor);
+    }
+  }
+}
+
+function getExpressionPropertyNames(handler: import('../registry/object-type-handler.js').ObjectTypeHandler | undefined): Set<string> {
+  const names = new Set<string>();
+  if (!handler) return names;
+  for (const [propName, propDef] of Object.entries(handler.properties)) {
+    if (propDef.type === 'expression') {
+      names.add(propName);
+    }
+  }
+  return names;
 }
 
 function extractIndex(path: string): number {

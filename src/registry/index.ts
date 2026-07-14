@@ -1,6 +1,8 @@
 import { ObjectTypeHandler, HandlerLookup } from './object-type-handler.js';
 import { antennaElementHandler } from './types/antenna-element.js';
 import { annotationCircleHandler } from './types/annotation-circle.js';
+import { annotationRectangleHandler } from './types/annotation-rectangle.js';
+import { annotationTextHandler } from './types/annotation-text.js';
 import { rfBlockHandler } from './types/rf-block.js';
 import { rfPhaseShifterHandler } from './types/rf-phase-shifter.js';
 import { rfSignalGeneratorHandler } from './types/rf-signal-generator.js';
@@ -28,6 +30,8 @@ export function createDefaultRegistry(): ObjectRegistry {
   const registry = new ObjectRegistry();
   registry.register(antennaElementHandler);
   registry.register(annotationCircleHandler);
+  registry.register(annotationRectangleHandler);
+  registry.register(annotationTextHandler);
   registry.register(rfBlockHandler);
   registry.register(rfPhaseShifterHandler);
   registry.register(rfSignalGeneratorHandler);
