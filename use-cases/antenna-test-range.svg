@@ -63,7 +63,7 @@
   </g>
   <g id="receiver">
     <path d="M448 180 h80 v40 h-80 Z" stroke="#333" stroke-width="1.5" fill="none" />
-    <text x="488" y="204" font-size="12" font-family="sans-serif" font-weight="bold" fill="#333" text-anchor="middle">Receiver</text>
+    <text x="488" y="204" font-size="12" font-family="sans-serif" font-weight="bold" fill="#333" text-anchor="middle">Rx Probe</text>
     <line x1="443" y1="200" x2="448" y2="200" stroke="#333" stroke-width="1.5" />
   </g>
   <rect x="225" y="36.5" width="69" height="327" stroke="green" stroke-dasharray="5 3" fill="none" />

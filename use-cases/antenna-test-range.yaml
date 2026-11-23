@@ -27,7 +27,7 @@ objects:
         orientation: left
       - type: rf.Block
         id: receiver
-        label: Receiver
+        label: Rx Probe
         outputPorts: 0
 
   - type: annotation.Rectangle
