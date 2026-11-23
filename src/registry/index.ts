@@ -5,6 +5,8 @@ import { annotationRectangleHandler } from './types/annotation-rectangle.js';
 import { annotationTextHandler } from './types/annotation-text.js';
 import { rfBlockHandler } from './types/rf-block.js';
 import { rfPhaseShifterHandler } from './types/rf-phase-shifter.js';
+import { rfAttenuatorHandler } from './types/rf-attenuator.js';
+import { rfCombinerHandler } from './types/rf-combiner.js';
 import { rfSignalGeneratorHandler } from './types/rf-signal-generator.js';
 import { rfSeriesChainHandler } from './types/rf-series-chain.js';
 import { rfParallelChainHandler } from './types/rf-parallel-chain.js';
@@ -34,6 +36,8 @@ export function createDefaultRegistry(): ObjectRegistry {
   registry.register(annotationTextHandler);
   registry.register(rfBlockHandler);
   registry.register(rfPhaseShifterHandler);
+  registry.register(rfAttenuatorHandler);
+  registry.register(rfCombinerHandler);
   registry.register(rfSignalGeneratorHandler);
   registry.register(rfSeriesChainHandler);
   registry.register(rfParallelChainHandler);

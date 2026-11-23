@@ -1,0 +1,31 @@
+objects:
+  - type: rf.SeriesChain
+    id: partitionedArray
+    objects:
+      - type: rf.ParallelChain
+        id: elements
+        count: 4
+        objects:
+          - type: antenna.Element
+            id: element
+            orientation: left
+      - type: rf.Block
+        id: splitter
+        label: 1:2 Splitters
+        inputPorts: 4
+        outputPorts: 8
+        textOrientation: vertical
+      - type: rf.ParallelChain
+        id: weights
+        count: 8
+        objects:
+          - type: rf.PhaseShifter
+            id: phaseShifter
+          - type: rf.Attenuator
+            id: attenuator
+      - type: rf.Block
+        id: combiner
+        label: 8x2 Combiner
+        inputPorts: 8
+        outputPorts: 2
+        textOrientation: vertical

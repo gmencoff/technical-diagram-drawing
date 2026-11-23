@@ -1,0 +1,18 @@
+objects:
+  - type: rf.ParallelChain
+    id: subarrays
+    count: 2
+    objects:
+      - type: rf.ParallelChain
+        id: elements
+        count: 2
+        objects:
+          - type: antenna.Element
+            id: element
+          - type: rf.PhaseShifter
+            id: phaseShifter
+          - type: rf.Attenuator
+            id: attenuator
+      - type: rf.Combiner
+        id: combiner
+        inputPorts: 2

@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 311 400">
+  <g id="subarrays.1.elements.1.element">
+    <line x1="74" y1="65" x2="104" y2="65" stroke="#333" stroke-width="1.5" />
+    <path d="M50 51.666666666666664 L50 78.33333333333333 L74 65 Z" stroke="#333" stroke-width="1.5" fill="none" />
+  </g>
+  <g id="subarrays.1.elements.1.phaseShifter">
+    <circle cx="134" cy="65" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M117.02943725152286 81.97056274847714 L150.97056274847714 48.029437251522864" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M150.97056274847714 48.029437251522864 L149.11440744786245 53.59790315336693 L145.40209684663307 49.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
+    <line x1="114" y1="65" x2="119" y2="65" stroke="#333" stroke-width="1.5" />
+    <line x1="149" y1="65" x2="154" y2="65" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="subarrays.1.elements.1.attenuator">
+    <rect x="179" y="54" width="22" height="22" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M179 65 L183.4 65 L184.5 61.7 L186.70000000000002 68.3 L188.9 61.7 L191.1 68.3 L193.3 61.7 L195.5 68.3 L196.6 65 L201 65" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M173.02943725152286 81.97056274847714 L206.97056274847714 48.029437251522864" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M206.97056274847714 48.029437251522864 L205.11440744786245 53.59790315336693 L201.40209684663307 49.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
+    <line x1="174" y1="65" x2="179" y2="65" stroke="#333" stroke-width="1.5" />
+    <line x1="201" y1="65" x2="206" y2="65" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="subarrays.1.elements.2.element">
+    <line x1="74" y1="155" x2="104" y2="155" stroke="#333" stroke-width="1.5" />
+    <path d="M50 141.66666666666666 L50 168.33333333333334 L74 155 Z" stroke="#333" stroke-width="1.5" fill="none" />
+  </g>
+  <g id="subarrays.1.elements.2.phaseShifter">
+    <circle cx="134" cy="155" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M117.02943725152286 171.97056274847714 L150.97056274847714 138.02943725152286" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M150.97056274847714 138.02943725152286 L149.11440744786245 143.59790315336693 L145.40209684663307 139.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
+    <line x1="114" y1="155" x2="119" y2="155" stroke="#333" stroke-width="1.5" />
+    <line x1="149" y1="155" x2="154" y2="155" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="subarrays.1.elements.2.attenuator">
+    <rect x="179" y="144" width="22" height="22" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M179 155 L183.4 155 L184.5 151.7 L186.70000000000002 158.3 L188.9 151.7 L191.1 158.3 L193.3 151.7 L195.5 158.3 L196.6 155 L201 155" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M173.02943725152286 171.97056274847714 L206.97056274847714 138.02943725152286" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M206.97056274847714 138.02943725152286 L205.11440744786245 143.59790315336693 L201.40209684663307 139.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
+    <line x1="174" y1="155" x2="179" y2="155" stroke="#333" stroke-width="1.5" />
+    <line x1="201" y1="155" x2="206" y2="155" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="subarrays.1.combiner">
+    <circle cx="246" cy="110" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <text x="246" y="115.6" font-size="16" font-family="sans-serif" font-weight="bold" fill="#333" text-anchor="middle">Σ</text>
+    <line x1="226" y1="105" x2="231.85786437626905" y2="105" stroke="#333" stroke-width="1.5" />
+    <line x1="226" y1="115" x2="231.85786437626905" y2="115" stroke="#333" stroke-width="1.5" />
+    <line x1="261" y1="110" x2="266" y2="110" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="subarrays.2.elements.1.element">
+    <line x1="74" y1="245" x2="104" y2="245" stroke="#333" stroke-width="1.5" />
+    <path d="M50 231.66666666666666 L50 258.3333333333333 L74 245 Z" stroke="#333" stroke-width="1.5" fill="none" />
+  </g>
+  <g id="subarrays.2.elements.1.phaseShifter">
+    <circle cx="134" cy="245" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M117.02943725152286 261.97056274847716 L150.97056274847714 228.02943725152286" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M150.97056274847714 228.02943725152286 L149.11440744786245 233.59790315336693 L145.40209684663307 229.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
+    <line x1="114" y1="245" x2="119" y2="245" stroke="#333" stroke-width="1.5" />
+    <line x1="149" y1="245" x2="154" y2="245" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="subarrays.2.elements.1.attenuator">
+    <rect x="179" y="234" width="22" height="22" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M179 245 L183.4 245 L184.5 241.7 L186.70000000000002 248.3 L188.9 241.7 L191.1 248.3 L193.3 241.7 L195.5 248.3 L196.6 245 L201 245" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M173.02943725152286 261.97056274847716 L206.97056274847714 228.02943725152286" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M206.97056274847714 228.02943725152286 L205.11440744786245 233.59790315336693 L201.40209684663307 229.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
+    <line x1="174" y1="245" x2="179" y2="245" stroke="#333" stroke-width="1.5" />
+    <line x1="201" y1="245" x2="206" y2="245" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="subarrays.2.elements.2.element">
+    <line x1="74" y1="335" x2="104" y2="335" stroke="#333" stroke-width="1.5" />
+    <path d="M50 321.6666666666667 L50 348.3333333333333 L74 335 Z" stroke="#333" stroke-width="1.5" fill="none" />
+  </g>
+  <g id="subarrays.2.elements.2.phaseShifter">
+    <circle cx="134" cy="335" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M117.02943725152286 351.97056274847716 L150.97056274847714 318.02943725152284" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M150.97056274847714 318.02943725152284 L149.11440744786245 323.5979031533669 L145.40209684663307 319.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
+    <line x1="114" y1="335" x2="119" y2="335" stroke="#333" stroke-width="1.5" />
+    <line x1="149" y1="335" x2="154" y2="335" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="subarrays.2.elements.2.attenuator">
+    <rect x="179" y="324" width="22" height="22" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M179 335 L183.4 335 L184.5 331.7 L186.70000000000002 338.3 L188.9 331.7 L191.1 338.3 L193.3 331.7 L195.5 338.3 L196.6 335 L201 335" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M173.02943725152286 351.97056274847716 L206.97056274847714 318.02943725152284" stroke="#333" stroke-width="1.5" fill="none" />
+    <path d="M206.97056274847714 318.02943725152284 L205.11440744786245 323.5979031533669 L201.40209684663307 319.88559255213755 Z" stroke="#333" stroke-width="1.5" fill="#333" />
+    <line x1="174" y1="335" x2="179" y2="335" stroke="#333" stroke-width="1.5" />
+    <line x1="201" y1="335" x2="206" y2="335" stroke="#333" stroke-width="1.5" />
+  </g>
+  <g id="subarrays.2.combiner">
+    <circle cx="246" cy="290" r="15" stroke="#333" stroke-width="1.5" fill="none" />
+    <text x="246" y="295.6" font-size="16" font-family="sans-serif" font-weight="bold" fill="#333" text-anchor="middle">Σ</text>
+    <line x1="226" y1="285" x2="231.85786437626905" y2="285" stroke="#333" stroke-width="1.5" />
+    <line x1="226" y1="295" x2="231.85786437626905" y2="295" stroke="#333" stroke-width="1.5" />
+    <line x1="261" y1="290" x2="266" y2="290" stroke="#333" stroke-width="1.5" />
+  </g>
+  <line x1="104" y1="65" x2="114" y2="65" stroke="#333" stroke-width="1.5" />
+  <line x1="154" y1="65" x2="174" y2="65" stroke="#333" stroke-width="1.5" />
+  <line x1="104" y1="155" x2="114" y2="155" stroke="#333" stroke-width="1.5" />
+  <line x1="154" y1="155" x2="174" y2="155" stroke="#333" stroke-width="1.5" />
+  <line x1="206" y1="65" x2="226" y2="105" stroke="#333" stroke-width="1.5" />
+  <line x1="206" y1="155" x2="226" y2="115" stroke="#333" stroke-width="1.5" />
+  <line x1="104" y1="245" x2="114" y2="245" stroke="#333" stroke-width="1.5" />
+  <line x1="154" y1="245" x2="174" y2="245" stroke="#333" stroke-width="1.5" />
+  <line x1="104" y1="335" x2="114" y2="335" stroke="#333" stroke-width="1.5" />
+  <line x1="154" y1="335" x2="174" y2="335" stroke="#333" stroke-width="1.5" />
+  <line x1="206" y1="245" x2="226" y2="285" stroke="#333" stroke-width="1.5" />
+  <line x1="206" y1="335" x2="226" y2="295" stroke="#333" stroke-width="1.5" />
+</svg>
