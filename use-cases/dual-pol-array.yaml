@@ -1,0 +1,29 @@
+objects:
+  - type: rf.ParallelChain
+    id: subarrays
+    count: 2
+    objects:
+      - type: rf.ParallelChain
+        id: channels
+        count: 2
+        objects:
+          - type: antenna.DualPolElement
+            id: element
+          - type: rf.ParallelChain
+            id: feeds
+            count: 2
+            objects:
+              - type: rf.LNA
+                id: lna
+              - type: rf.PhaseShifter
+                id: phaseShifter
+              - type: rf.Attenuator
+                id: attenuator
+          - type: rf.Combiner
+            id: polCombiner
+            inputPorts: 2
+          - type: rf.TimeDelay
+            id: timeDelay
+      - type: rf.Combiner
+        id: combiner
+        inputPorts: 2
